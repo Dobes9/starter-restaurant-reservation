@@ -33,6 +33,7 @@ export default function ReservationForm() {
             type="text"
             value={formData.first_name}
             onChange={formChangeHandler}
+            required
           />
         </div>
       </div>
@@ -48,6 +49,7 @@ export default function ReservationForm() {
             type="text"
             value={formData.last_name}
             onChange={formChangeHandler}
+            required
           />
         </div>
       </div>
@@ -65,6 +67,7 @@ export default function ReservationForm() {
             pattern="\d{3}-\d{3}-\d{4}"
             value={formData.mobile_number}
             onChange={formChangeHandler}
+            required
           />
         </div>
       </div>
@@ -82,6 +85,7 @@ export default function ReservationForm() {
             pattern="\d{4}-\d{2}-\d{2}"
             value={formData.reservation_date}
             onChange={formChangeHandler}
+            required
           />
         </div>
       </div>
@@ -99,6 +103,7 @@ export default function ReservationForm() {
             pattern="[0-9]{2}:[0-9]{2}"
             value={formData.reservation_time}
             onChange={formChangeHandler}
+            required
           />
         </div>
       </div>
@@ -113,6 +118,7 @@ export default function ReservationForm() {
             name="people"
             value={formData.people}
             onChange={formChangeHandler}
+            required
           >
             <option selected>Party size</option>
             <option value="1">One</option>
