@@ -107,19 +107,32 @@ export default function ReservationForm() {
           <label className="form-label" htmlFor="people">
             People:
           </label>
-          <input
+          <select
             className="form-control"
             id="people"
             name="people"
-            type="text"
             value={formData.people}
             onChange={formChangeHandler}
-          />
+          >
+            <option selected>Party size</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Five</option>
+            <option value="6">Six</option>
+            <option value="7">Seven</option>
+            <option value="8">Eight</option>
+            <option value="9">Nine</option>
+            <option value="10">Ten</option>
+            <option value="11">Eleven</option>
+            <option value="12">Twelve</option>
+          </select>
         </div>
       </div>
       <div>
-        <button className="btn btn-secondary">Cancel</button>
-        <button className="btn btn-primary" type="submit">
+        <button className="btn btn-secondary mx-1">Cancel</button>
+        <button className="btn btn-primary mx-1" type="submit">
           Submit
         </button>
       </div>
