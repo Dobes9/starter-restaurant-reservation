@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import formatReservationDate from "../utils/format-reservation-date";
 
 export default function ReservationForm() {
+  const history = useHistory();
   const initialFormData = {
     first_name: "",
     last_name: "",
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: "",
+    people: 0,
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -17,6 +20,13 @@ export default function ReservationForm() {
       ...formData,
       [target.name]: target.value,
     });
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    history.push(
+      `/dashboard?date=${formatReservationDate(formData.reservation_date)}`
+    );
   };
 
   return (
@@ -137,8 +147,17 @@ export default function ReservationForm() {
         </div>
       </div>
       <div>
-        <button className="btn btn-secondary mx-1">Cancel</button>
-        <button className="btn btn-primary mx-1" type="submit">
+        <button
+          className="btn btn-secondary mx-1"
+          onClick={() => history.goBack()}
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary mx-1"
+          type="submit"
+          onClick={submitHandler}
+        >
           Submit
         </button>
       </div>
