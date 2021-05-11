@@ -11,6 +11,7 @@ import { previous, today, next } from "../utils/date-time";
  * @returns {JSX.Element}
  */
 function Dashboard({ date }) {
+  const history = useHistory();
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
 
@@ -33,6 +34,25 @@ function Dashboard({ date }) {
       </div>
       <ErrorAlert error={reservationsError} />
       {JSON.stringify(reservations)}
+
+      <button
+        className="btn btn-secondary mx-1"
+        onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
+      >
+        Previous
+      </button>
+      <button
+        className="btn btn-primary mx-1"
+        onClick={() => history.push(`/dashboard?date=${today()}`)}
+      >
+        Today
+      </button>
+      <button
+        className="btn btn-secondary mx-1"
+        onClick={() => history.push(`/dashboard?date=${next(date)}`)}
+      >
+        Next
+      </button>
     </main>
   );
 }
