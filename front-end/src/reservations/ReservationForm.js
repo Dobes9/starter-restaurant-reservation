@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import formatReservationDate from "../utils/format-reservation-date";
+import { createReservation } from "../utils/api";
 
 export default function ReservationForm() {
   const history = useHistory();
+  const abortController = new AbortController();
+  const signal = abortController.signal;
+
   const initialFormData = {
     first_name: "",
     last_name: "",
@@ -24,6 +28,7 @@ export default function ReservationForm() {
 
   const submitHandler = (event) => {
     event.preventDefault();
+    createReservation(formData, signal);
     history.push(
       `/dashboard?date=${formatReservationDate(formData.reservation_date)}`
     );
