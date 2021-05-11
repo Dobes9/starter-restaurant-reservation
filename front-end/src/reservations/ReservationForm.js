@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import formatReservationDate from "../utils/format-reservation-date";
+import { today } from "../utils/date-time";
 import { createReservation } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 export default function ReservationForm() {
   const history = useHistory();
@@ -14,10 +16,11 @@ export default function ReservationForm() {
     mobile_number: "",
     reservation_date: "",
     reservation_time: "",
-    people: 0,
+    people: 1,
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
+  const [dateErrors, setDateErrors] = useState([]);
 
   const formChangeHandler = ({ target }) => {
     setFormData({
@@ -28,14 +31,45 @@ export default function ReservationForm() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    createReservation(formData, signal);
-    history.push(
-      `/dashboard?date=${formatReservationDate(formData.reservation_date)}`
-    );
+    if (validateDate()) {
+      createReservation(formData, signal);
+      history.push(
+        `/dashboard?date=${formatReservationDate(formData.reservation_date)}`
+      );
+    }
+  };
+
+  function validateDate() {
+    const reservationDate = new Date(formData.reservation_date);
+    const todaysDate = new Date(today());
+
+    const foundErrors = [];
+    if (reservationDate.getUTCDay() === 2) {
+      foundErrors.push({
+        message: `Reservations cannot be made on a Tuesday (Restaurant is closed).`,
+      });
+    }
+
+    if (reservationDate < todaysDate) {
+      foundErrors.push({ message: `Reservations cannot be made in the past.` });
+    }
+    setDateErrors(foundErrors);
+
+    if (foundErrors.length > 0) {
+      return false;
+    }
+    return true;
+  }
+
+  const errors = () => {
+    return dateErrors.map((error, index) => (
+      <ErrorAlert key={index} error={error} />
+    ));
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
+      <div>{errors()}</div>
       <div className="row mb-3">
         <div className="col-6 form-group">
           <label className="form-label" htmlFor="first_name">
@@ -77,9 +111,9 @@ export default function ReservationForm() {
             className="form-control"
             id="mobile_number"
             name="mobile_number"
-            type="text"
+            type="tel"
             placeholder="XXX-XXX-XXXX"
-            pattern="\d{3}-\d{3}-\d{4}"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             value={formData.mobile_number}
             onChange={formChangeHandler}
             required
@@ -150,7 +184,6 @@ export default function ReservationForm() {
         <button
           className="btn btn-primary mx-1"
           type="submit"
-          onClick={submitHandler}
         >
           Submit
         </button>
