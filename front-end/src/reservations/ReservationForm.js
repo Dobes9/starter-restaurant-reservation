@@ -127,22 +127,17 @@ export default function ReservationForm() {
           <label className="form-label" htmlFor="people">
             People:
           </label>
-          <select
+          <input
             className="form-control"
             id="people"
             name="people"
+            type="number"
+            max="12"
+            min="1"
             value={formData.people}
             onChange={formChangeHandler}
             required
-          >
-            <option selected>Party size</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-          </select>
+          />
         </div>
       </div>
       <div>
