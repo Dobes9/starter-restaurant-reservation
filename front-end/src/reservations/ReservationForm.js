@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import formatReservationDate from "../utils/format-reservation-date";
 import { today } from "../utils/date-time";
 import { createReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -33,9 +32,7 @@ export default function ReservationForm() {
     event.preventDefault();
     if (validateDate()) {
       createReservation(formData, signal);
-      history.push(
-        `/dashboard?date=${formatReservationDate(formData.reservation_date)}`
-      );
+      history.push(`/dashboard?date=${formData.reservation_date}`);
     }
   };
 
@@ -181,10 +178,7 @@ export default function ReservationForm() {
         >
           Cancel
         </button>
-        <button
-          className="btn btn-primary mx-1"
-          type="submit"
-        >
+        <button className="btn btn-primary mx-1" type="submit">
           Submit
         </button>
       </div>
