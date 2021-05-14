@@ -37,18 +37,55 @@ export default function ReservationForm() {
   };
 
   function validateDate() {
-    const reservationDate = new Date(formData.reservation_date);
+    const reservationDate = new Date(
+      `${formData.reservation_date}T${formData.reservation_time}:00.000`
+    );
     const todaysDate = new Date(today());
 
     const foundErrors = [];
+
+    // Validation to check if reservation date is not a Tuesday
     if (reservationDate.getUTCDay() === 2) {
       foundErrors.push({
-        message: `Reservations cannot be made on a Tuesday (Restaurant is closed).`,
+        message: `Reservation cannot be made: Restaurant is closed on Tuesdays.`,
       });
     }
 
+    // Validation to check if reservation date is not a past date
     if (reservationDate < todaysDate) {
-      foundErrors.push({ message: `Reservations cannot be made in the past.` });
+      foundErrors.push({
+        message: `Reservations cannot be made: Date is in the past.`,
+      });
+    }
+
+    // Validation to check if reseration is before 10:30 AM
+    if (
+      reservationDate.getHours() < 10 ||
+      (reservationDate.getHours() === 10 && reservationDate.getMinutes() < 30)
+    ) {
+      foundErrors.push({
+        message: `Reservation cannot be made: Restaurant is closed until 10:30 AM`,
+      });
+    }
+
+    // Validation to check if reservation is after 10:30 PM
+    if (
+      reservationDate.getHours() > 22 ||
+      (reservationDate.getHours() === 22 && reservationDate.getMinutes() >= 30)
+    ) {
+      foundErrors.push({
+        message: `Reservation cannot be made: Restaurant closes at 10:30 PM`,
+      });
+    }
+
+    // Validation to check if reservation has at least 1 hour before restaurant closes
+    if (
+      reservationDate.getHours() > 21 ||
+      (reservationDate.getHours() === 21 && reservationDate.getMinutes() > 30)
+    ) {
+      foundErrors.push({
+        message: `Reservation cannot be made: Reservation must be made for at least 1 hour before closing (10:30 PM).`,
+      });
     }
     setDateErrors(foundErrors);
 
