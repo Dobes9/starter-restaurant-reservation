@@ -54,6 +54,22 @@ function Dashboard({ date }) {
         </tbody>
       </table>
 
+      <h4>Tables</h4>
+
+      <ErrorAlert error={tablesError} />
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Table Name</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
       <button
         className="btn btn-secondary mx-1"
         onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
