@@ -55,6 +55,28 @@ function hasMobileNumber(req, res, next) {
   });
 }
 
+function hasReservationDate(req, res, next) {
+  const { reservation_date } = req.body.data;
+  if (reservation_date) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Reservation must have a date`,
+  });
+}
+
+function hasReservationTime(req, res, next) {
+  const { reservation_time } = req.body.data;
+  if (reservation_time) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Reservation must have a time`,
+  });
+}
+
 function hasNumOfPeople(req, res, next) {
   const { people } = req.body.data;
   if (people >= 1) {
@@ -81,6 +103,8 @@ module.exports = {
     hasFirstName,
     hasLastName,
     hasMobileNumber,
+    hasReservationDate,
+    hasReservationTime,
     hasNumOfPeople,
     asyncErrorBoundary(create),
   ],
