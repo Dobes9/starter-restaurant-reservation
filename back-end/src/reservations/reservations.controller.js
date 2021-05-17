@@ -58,6 +58,7 @@ function hasMobileNumber(req, res, next) {
 function hasReservationDate(req, res, next) {
   const { reservation_date } = req.body.data;
   if (reservation_date) {
+    res.locals.reservation_date = reservation_date;
     return next();
   }
   next({
@@ -66,9 +67,33 @@ function hasReservationDate(req, res, next) {
   });
 }
 
+function reservationNotOnTuesdays(req, res, next) {
+  const reservationDate = new Date(res.locals.reservation_date);
+  if (reservationDate.getUTCDay === 2) {
+    next({
+      status: 400,
+      message: `Reservation cannot be made for a Tuesday`,
+    });
+  }
+  return next();
+}
+
+function reservationForAFutureDate(req, res, next) {
+  const reservationDate = new Date(res.locals.reservation_date);
+  const todaysDate = new Date();
+  if (reservationDate < todaysDate) {
+    next({
+      status: 400,
+      message: `Reservation cannot be made for a date in the past`,
+    });
+  }
+  return next();
+}
+
 function hasReservationTime(req, res, next) {
   const { reservation_time } = req.body.data;
   if (reservation_time) {
+    res.locals.reservation_time = reservation_time;
     return next();
   }
   next({
@@ -76,6 +101,12 @@ function hasReservationTime(req, res, next) {
     message: `Reservation must have a time`,
   });
 }
+
+function reservationTimeAfterOpen(req, res, next) {
+  
+}
+
+function reservationTimeOneHourBeforeClose(req, res, next) {}
 
 function hasNumOfPeople(req, res, next) {
   const { people } = req.body.data;
@@ -104,6 +135,8 @@ module.exports = {
     hasLastName,
     hasMobileNumber,
     hasReservationDate,
+    reservationForAFutureDate,
+    reservationNotOnTuesdays,
     hasReservationTime,
     hasNumOfPeople,
     asyncErrorBoundary(create),
