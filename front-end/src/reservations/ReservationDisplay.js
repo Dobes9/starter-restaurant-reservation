@@ -25,7 +25,13 @@ export default function ReservationDisplay({ reservations }) {
         <td>{readableTime}</td>
         <td>{people}</td>
         <td>{status}</td>
-        <td>Set Table</td>
+        <td>
+          <a href={`/reservations/${reservation_id}/seat`}>
+            <button className="btn btn-primary" type="button">
+              Seat
+            </button>
+          </a>
+        </td>
       </tr>
     );
   });
