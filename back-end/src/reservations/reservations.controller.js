@@ -79,7 +79,9 @@ function reservationNotOnTuesdays(req, res, next) {
 }
 
 function reservationForAFutureDate(req, res, next) {
-  const reservationDate = new Date(res.locals.reservation_date);
+  const reservationDate = new Date(
+    `${res.locals.reservation_date}T${res.locals.reservation_time}:00.000`
+  );
   const todaysDate = new Date();
   if (reservationDate < todaysDate) {
     next({
@@ -103,10 +105,32 @@ function hasReservationTime(req, res, next) {
 }
 
 function reservationTimeAfterOpen(req, res, next) {
-  
+  const reservationTime = new Date(res.locals.reservation_time);
+  if (
+    reservationTime.getHours() < 10 ||
+    (reservationTime.getHours() === 10 && reservationTime.getMinutes() < 30)
+  ) {
+    next({
+      status: 400,
+      message: `Reservation must be made for after 10:30 AM`,
+    });
+  }
+  return next();
 }
 
-function reservationTimeOneHourBeforeClose(req, res, next) {}
+function reservationTimeOneHourBeforeClose(req, res, next) {
+  const reservationTime = new Date(res.locals.reservation_time);
+  if (
+    reservationTime.getHours() > 21 ||
+    (reservationTime.getHours() === 21 && reservationTime.getMinutes() > 30)
+  ) {
+    next({
+      status: 400,
+      message: `Reservation must be made for at least an hour before close (10:30 PM)`,
+    });
+  }
+  return next();
+}
 
 function hasNumOfPeople(req, res, next) {
   const { people } = req.body.data;
@@ -135,9 +159,11 @@ module.exports = {
     hasLastName,
     hasMobileNumber,
     hasReservationDate,
+    hasReservationTime,
     reservationForAFutureDate,
     reservationNotOnTuesdays,
-    hasReservationTime,
+    reservationTimeAfterOpen,
+    reservationTimeOneHourBeforeClose,
     hasNumOfPeople,
     asyncErrorBoundary(create),
   ],
