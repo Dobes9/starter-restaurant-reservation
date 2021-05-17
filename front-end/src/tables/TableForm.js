@@ -10,7 +10,7 @@ export default function TableForm() {
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
-  const [error, setError] = useState([]);
+  const [error, setError] = useState(null);
 
   const formChangeHandler = ({ target }) => {
     setFormData({
@@ -42,9 +42,7 @@ export default function TableForm() {
 
   return (
     <form onSubmit={submitHandler}>
-      <div>
-        <ErrorAlert error={error} />
-      </div>
+      <ErrorAlert error={error} />
       <div className="row mb-3">
         <div className="col-6 form-group">
           <label className="form-label" htmlFor="table_name">
