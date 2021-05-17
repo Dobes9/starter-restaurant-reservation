@@ -17,7 +17,7 @@ export default function ReservationDisplay({ reservations }) {
     ).toLocaleTimeString();
 
     return (
-      <tr key={reservation.reservation_id}>
+      <tr key={reservation_id}>
         <td>{reservation_id}</td>
         <td>{first_name}</td>
         <td>{last_name}</td>
