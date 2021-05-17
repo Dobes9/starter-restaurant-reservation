@@ -46,7 +46,7 @@ function Dashboard({ date }) {
             <th scope="col">Time</th>
             <th scope="col">People</th>
             <th scope="col">Status</th>
-            <th scope="col">Set Table</th>
+            <th scope="col">Seat Table</th>
           </tr>
         </thead>
         <tbody>
