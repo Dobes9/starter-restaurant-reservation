@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time";
+import ReservationDisplay from "../reservations/ReservationDisplay";
 
 /**
  * Defines the dashboard page.
@@ -35,7 +36,23 @@ function Dashboard({ date }) {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      {JSON.stringify(reservations)}
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Time</th>
+            <th scope="col">People</th>
+            <th scope="col">Status</th>
+            <th scope="col">Set Table</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ReservationDisplay reservations={reservations} />
+        </tbody>
+      </table>
 
       <button
         className="btn btn-secondary mx-1"
