@@ -4,6 +4,7 @@ import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time";
 import ReservationDisplay from "../reservations/ReservationDisplay";
+import TablesDisplay from "../tables/TablesDisplay";
 
 /**
  * Defines the dashboard page.
@@ -67,7 +68,9 @@ function Dashboard({ date }) {
             <th scope="col">Status</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <TablesDisplay tables={tables} />
+        </tbody>
       </table>
 
       <button
