@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const controller = require("./tables.controller");
 
-router.route("/").get().post();
+router.route("/").get(controller.list).post(controller.create);
 router.route("/:table_id/seat").put();
 
 module.exports = router;
