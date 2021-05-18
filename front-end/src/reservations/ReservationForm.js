@@ -89,10 +89,7 @@ export default function ReservationForm() {
     }
     setDateErrors(foundErrors);
 
-    if (foundErrors.length > 0) {
-      return false;
-    }
-    return true;
+    return foundErrors.length === 0;
   }
 
   const errors = () => {
