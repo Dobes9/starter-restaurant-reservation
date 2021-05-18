@@ -7,6 +7,7 @@ export default function TableForm() {
   const initialFormData = {
     table_name: "",
     capacity: 1,
+    status: "Free",
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
