@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import ListReservations from "../reservations/ListReservations";
+import { listReservations } from "../utils/api";
 
 export default function SearchByMobileNumber() {
   const [formData, setFormData] = useState(null);
+  const [results, setResults] = useState([]);
+  const [displayResults, setDisplayResults] = useState(false);
 
   const formChangeHandler = ({ target }) => {
     setFormData(target.value);
@@ -31,6 +34,13 @@ export default function SearchByMobileNumber() {
           </div>
         </div>
       </form>
+      {displayResults ? (
+        results.length ? (
+          <ListReservations reservations={results} />
+        ) : (
+          <h4>No resevations found</h4>
+        )
+      ) : null}
     </>
   );
 }
