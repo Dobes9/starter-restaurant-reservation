@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function TablesDisplay({ tables }) {
-  const listTables = tables.map((table) => {
+  const allTables = tables.map((table) => {
     const { table_id, table_name, capacity, status } = table;
 
     return (
@@ -14,5 +14,5 @@ export default function TablesDisplay({ tables }) {
     );
   });
 
-  return <>{listTables}</>;
+  return <>{allTables}</>;
 }
