@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import { seatReservation } from "../utils/api";
 
 export default function SeatReservation({ reservations, tables }) {
   const history = useHistory();
@@ -61,6 +62,7 @@ export default function SeatReservation({ reservations, tables }) {
     event.preventDefault();
     if (validateSeat()) {
       // API call to go here
+      seatReservation(reservation_id, tableId);
       history.push("/dashboard");
     }
   };
