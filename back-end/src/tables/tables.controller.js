@@ -1,8 +1,9 @@
-const service = require("./tables.service");
+const TablesService = require("./tables.service");
+const ReservationsService = require("../reservations/reservations.service");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function list(req, res) {
-  res.json({ data: await service.list() });
+  res.json({ data: await TablesService.list() });
 }
 
 function hasData(req, res, next) {
@@ -36,7 +37,7 @@ function tableCanSeatAtLeastOnePerson(req, res, next) {
 }
 
 async function create(req, res) {
-  const newTable = await service.create(req.body.data);
+  const newTable = await TablesService.create(req.body.data);
 
   res.status(201).json({
     data: newTable,
@@ -44,7 +45,7 @@ async function create(req, res) {
 }
 
 async function tableExists(req, res, next) {
-  const table = await service.read(req.params.table_id);
+  const table = await TablesService.read(req.params.table_id);
   if (table) {
     res.locals.table = table;
     return next();
@@ -65,7 +66,29 @@ function isTableOccupied(req, res, next) {
   });
 }
 
-async function update(req, res) {}
+async function isTableCapacityGreaterThanReservationSize(req, res, next) {
+  const reservation = await ReservationsService.read(
+    req.body.data.reservation_id
+  );
+  if (res.locals.table.capacity >= reservation.people) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Table capacity must be greater than or equal to reservation party size.`,
+  });
+}
+
+async function update(req, res) {
+  const updatedTable = {
+    ...res.locals.table,
+    status: "occupied",
+    reservation_id: res.locals.reservation.reservation_id,
+  };
+  const data = await TablesService.update(updatedTable);
+  res.json({ data });
+}
 
 module.exports = {
   list: asyncErrorBoundary(list),
@@ -78,6 +101,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(tableExists),
     isTableOccupied,
+    asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
     asyncErrorBoundary(update),
   ],
 };
