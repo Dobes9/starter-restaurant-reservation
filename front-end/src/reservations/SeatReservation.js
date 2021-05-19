@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export default function SeatReservation({ tables }) {
+export default function SeatReservation({ reservations, tables }) {
   const history = useHistory();
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
