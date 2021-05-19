@@ -85,6 +85,7 @@ export default function SeatReservation({ reservations, tables }) {
             id="table_id"
             value={tableId}
             onChange={formChangeHandler}
+            required
           >
             <option selected>Please choose a table from this menu</option>
             {tableOptions}
