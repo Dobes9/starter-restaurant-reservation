@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import ErrorAlert from "../layout/ErrorAlert";
 
 export default function SeatReservation({ reservations, tables }) {
   const history = useHistory();
+  const { reservation_id } = useParams();
+
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
 
-  if (!tables) return null;
+  if (!tables || !reservations) return null;
 
   //   if (tables.length === 0) {
   //     return <h4>No Tables to seat reservations</h4>;
@@ -28,6 +31,30 @@ export default function SeatReservation({ reservations, tables }) {
     const foundErrors = [];
 
     const foundTable = tables.find((table) => table.table_id === tableId);
+    const foundReservation = reservations.find(
+      (reservation) => reservation.reservation_id === reservation_id
+    );
+
+    if (!foundTable) {
+      foundErrors.push({ message: `The table you selected does not exist.` });
+    } else if (!foundReservation) {
+      foundErrors.push({ message: `The reservation does not exist.` });
+    } else {
+      if (foundTable.status === "occupied") {
+        foundErrors.push({
+          message: `The table you selected is currently occupied.`,
+        });
+      }
+      if (foundTable.capacity < foundReservation.people) {
+        foundErrors.push({
+          message: `The table you selected cannot seat ${foundReservation.people} people.`,
+        });
+      }
+    }
+
+    setErrors(foundErrors);
+
+    return foundErrors.length === 0;
   }
 
   const submitHandler = (event) => {
@@ -37,8 +64,16 @@ export default function SeatReservation({ reservations, tables }) {
       history.push("/dashboard");
     }
   };
+
+  const displayErrors = () => {
+    return errors.map((error, index) => {
+      <ErrorAlert key={index} error={error} />;
+    });
+  };
+
   return (
     <form onSubmit={submitHandler}>
+      <div>{displayErrors()}</div>
       <div className="row mb-3">
         <div className="col-6 form-group">
           <label className="form-label" htmlFor="table_id">
