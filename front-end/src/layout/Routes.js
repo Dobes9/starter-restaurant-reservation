@@ -8,6 +8,7 @@ import useQuery from "../utils/useQuery";
 import TableForm from "../tables/TableForm";
 import SeatReservation from "../reservations/SeatReservation";
 import EditReservation from "../reservations/EditReservation";
+import SearchByMobileNumber from "../search/SearchByMobileNumber";
 import { listTables, listReservations } from "../utils/api";
 
 /**
@@ -55,6 +56,9 @@ function Routes() {
           tables={tables}
           tablesError={tablesError}
         />
+      </Route>
+      <Route path="/search">
+        <SearchByMobileNumber />
       </Route>
       <Route path="/reservations/new">
         <NewReservation />
