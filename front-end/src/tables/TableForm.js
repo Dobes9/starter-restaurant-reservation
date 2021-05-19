@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
+import { createTable } from "../utils/api";
 
 export default function TableForm() {
   const history = useHistory();
+  const abortController = new AbortController();
+
   const initialFormData = {
     table_name: "",
     capacity: 1,
-    status: "Free",
+    status: "free",
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
@@ -24,6 +27,7 @@ export default function TableForm() {
     event.preventDefault();
     if (validateFields()) {
       // API function to go here
+      createTable(formData, abortController.signal);
       history.push(`/dashboard`);
     }
   };
