@@ -4,6 +4,10 @@ exports.up = function (knex) {
     table.string("table_name");
     table.integer("capacity");
     table.string("status");
+    table
+      .foreign("reservation_id")
+      .references("reservation_id")
+      .inTable("reservations");
     table.timestamps(true, true);
   });
 };
