@@ -7,6 +7,7 @@ import { today } from "../utils/date-time";
 import useQuery from "../utils/useQuery";
 import TableForm from "../tables/TableForm";
 import SeatReservation from "../reservations/SeatReservation";
+import EditReservation from "../reservations/EditReservation";
 import { listTables, listReservations } from "../utils/api";
 
 /**
@@ -60,6 +61,9 @@ function Routes() {
       </Route>
       <Route path="/reservations/:reservation_id/seat">
         <SeatReservation tables={tables} reservations={reservations} />
+      </Route>
+      <Route path="/reservations/:reservation_id/edit">
+        <EditReservation />
       </Route>
       <Route path="/tables/new">
         <TableForm />
