@@ -6,22 +6,34 @@ export default function SeatReservation({ tables }) {
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
 
+  if (!tables) return null;
+
+  //   if (tables.length === 0) {
+  //     return <h4>No Tables to seat reservations</h4>;
+  //   }
+
   const tableOptions = tables.map((table) => {
-    <option value={table.table_id}>
-      {table.table_name} - {table.capacity}
-    </option>;
+    return (
+      <option value={table.table_id}>
+        {table.table_name} - {table.capacity}
+      </option>
+    );
   });
 
   const formChangeHandler = ({ target }) => {
     setTableId(target.value);
   };
 
-  function validateSeat() {}
+  function validateSeat() {
+    const foundErrors = [];
+
+    const foundTable = tables.find((table) => table.table_id === tableId);
+  }
 
   const submitHandler = (event) => {
     event.preventDefault();
-    // API call to go here
     if (validateSeat()) {
+      // API call to go here
       history.push("/dashboard");
     }
   };
@@ -39,6 +51,7 @@ export default function SeatReservation({ tables }) {
             value={tableId}
             onChange={formChangeHandler}
           >
+            <option selected>Please choose a table from this menu</option>
             {tableOptions}
           </select>
         </div>
@@ -46,7 +59,7 @@ export default function SeatReservation({ tables }) {
       <div>
         <button
           className="btn btn-secondary mx-1"
-          onChange={() => history.goBack()}
+          onClick={() => history.goBack()}
         >
           Cancel
         </button>
