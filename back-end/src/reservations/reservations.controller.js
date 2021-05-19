@@ -151,6 +151,22 @@ async function create(req, res) {
   });
 }
 
+async function reservationExists(req, res, next) {
+  const reservation = await service.read(req.body.data.reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation cannot be found.`,
+  });
+}
+
+function read(req, res) {
+  res.json({ data: res.locals.reservation });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -167,4 +183,5 @@ module.exports = {
     hasNumOfPeople,
     asyncErrorBoundary(create),
   ],
+  read: [asyncErrorBoundary(reservationExists), read],
 };
