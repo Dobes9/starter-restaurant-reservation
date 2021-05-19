@@ -13,7 +13,10 @@ async function create(req, res) {
   });
 }
 
+async function update(req, res) {}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [asyncErrorBoundary(create)],
+  update: [asyncErrorBoundary(update)],
 };
