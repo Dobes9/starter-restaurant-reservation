@@ -32,6 +32,13 @@ export default function ReservationDisplay({ reservations }) {
             </button>
           </a>
         </td>
+        <td>
+          <a href={`/reservations/${reservation_id}/edit`}>
+            <button className="btn btn-primary" type="button">
+              Edit
+            </button>
+          </a>
+        </td>
       </tr>
     );
   });
