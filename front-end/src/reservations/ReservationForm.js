@@ -92,7 +92,7 @@ export default function ReservationForm() {
     return foundErrors.length === 0;
   }
 
-  const errors = () => {
+  const displayErrors = () => {
     return dateErrors.map((error, index) => (
       <ErrorAlert key={index} error={error} />
     ));
@@ -100,7 +100,7 @@ export default function ReservationForm() {
 
   return (
     <form onSubmit={submitHandler}>
-      <div>{errors()}</div>
+      <div>{displayErrors()}</div>
       <div className="row mb-3">
         <div className="col-6 form-group">
           <label className="form-label" htmlFor="first_name">
