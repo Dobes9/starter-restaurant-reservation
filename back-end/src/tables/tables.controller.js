@@ -43,6 +43,28 @@ async function create(req, res) {
   });
 }
 
+async function tableExists(req, res, next) {
+  const table = await service.read(req.params.table_id);
+  if (table) {
+    res.locals.table = table;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Table cannot be found.`,
+  });
+}
+
+function isTableOccupied(req, res, next) {
+  if (res.locals.table.status === "free") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Table is currently occupied by another reservation.`,
+  });
+}
+
 async function update(req, res) {}
 
 module.exports = {
@@ -53,5 +75,9 @@ module.exports = {
     tableCanSeatAtLeastOnePerson,
     asyncErrorBoundary(create),
   ],
-  update: [asyncErrorBoundary(update)],
+  update: [
+    asyncErrorBoundary(tableExists),
+    isTableOccupied,
+    asyncErrorBoundary(update),
+  ],
 };
