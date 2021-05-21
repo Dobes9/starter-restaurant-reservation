@@ -26,11 +26,13 @@ export default function ReservationDisplay({ reservations }) {
         <td>{people}</td>
         <td>{status}</td>
         <td>
-          <a href={`/reservations/${reservation_id}/seat`}>
-            <button className="btn btn-primary" type="button">
-              Seat
-            </button>
-          </a>
+          {status === "booked" ? (
+            <a href={`/reservations/${reservation_id}/seat`}>
+              <button className="btn btn-primary" type="button">
+                Seat
+              </button>
+            </a>
+          ) : null}
         </td>
         <td>
           <a href={`/reservations/${reservation_id}/edit`}>
