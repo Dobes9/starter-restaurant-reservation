@@ -56,7 +56,7 @@ async function tableExists(req, res, next) {
   });
 }
 
-function isTableOccupied(req, res, next) {
+function isTableFree(req, res, next) {
   if (res.locals.table.status === "free") {
     return next();
   }
@@ -90,6 +90,26 @@ async function update(req, res) {
   res.json({ data });
 }
 
+function isTableOccupied(req, res, next) {
+  if (res.locals.table.status === "occupied") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Table is currently free.`,
+  });
+}
+
+async function destroy(req, res) {
+  const updatedTable = {
+    ...res.locals.table,
+    status: "free",
+    reservation_id: null,
+  };
+  const data = await TablesService.update(updatedTable);
+  res.status(204).json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   create: [
@@ -100,8 +120,13 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(tableExists),
-    isTableOccupied,
+    isTableFree,
     asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
     asyncErrorBoundary(update),
+  ],
+  destroy: [
+    asyncErrorBoundary(tableExists),
+    isTableOccupied,
+    asyncErrorBoundary(destroy),
   ],
 };
