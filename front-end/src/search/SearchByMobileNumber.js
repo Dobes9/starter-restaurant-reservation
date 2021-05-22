@@ -15,7 +15,7 @@ export default function SearchByMobileNumber() {
 
   function listResults() {
     const abortController = new AbortController();
-    listReservations({ mobile_number }, abortController.signal)
+    listReservations({ mobile_number: mobile_number }, abortController.signal)
       .then(setResults)
       .catch(setReservationsError);
     return () => abortController.abort();
@@ -36,7 +36,7 @@ export default function SearchByMobileNumber() {
               className="form-control"
               id="mobile_number"
               name="mobile_number"
-              type="search"
+              type="tel"
               value={mobile_number}
               onChange={formChangeHandler}
               placeholder="Enter a customer's phone number"
@@ -51,7 +51,7 @@ export default function SearchByMobileNumber() {
         </div>
       </form>
       {displayResults ? (
-        results.length ? (
+        results.length > 0 ? (
           <ListReservations
             reservations={results}
             reservationsError={reservationsError}
