@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { today } from "../utils/date-time";
-import { createReservation } from "../utils/api";
+import {
+  createReservation,
+  readReservation,
+  updateReservation,
+} from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
 export default function ReservationForm() {
   const history = useHistory();
+  const { path, params } = useRouteMatch();
+  const { reservation_id } = params;
   const abortController = new AbortController();
-  const signal = abortController.signal;
 
   const initialFormData = {
     first_name: "",
@@ -16,10 +21,19 @@ export default function ReservationForm() {
     reservation_date: "",
     reservation_time: "",
     people: 1,
+    status: "booked",
   };
 
-  const [formData, setFormData] = useState({ ...initialFormData });
+  const [formData, setFormData] = useState({});
   const [dateErrors, setDateErrors] = useState([]);
+
+  useEffect(() => {
+    reservation_id
+      ? readReservation(reservation_id, abortController.signal).then(
+          setFormData
+        )
+      : setFormData({ ...initialFormData });
+  }, [reservation_id]);
 
   const formChangeHandler = ({ target }) => {
     setFormData({
@@ -30,9 +44,16 @@ export default function ReservationForm() {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (validateDate()) {
-      createReservation(formData, signal);
-      history.push(`/dashboard?date=${formData.reservation_date}`);
+    if (path === `reservations/new`) {
+      if (validateDate()) {
+        createReservation(formData, abortController.signal);
+        history.push(`/dashboard?date=${formData.reservation_date}`);
+      }
+    } else {
+      if (validateDate()) {
+        updateReservation(formData, abortController.signal);
+        history.goBack();
+      }
     }
   };
 
