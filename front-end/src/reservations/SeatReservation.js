@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { seatReservation } from "../utils/api";
+import { seatReservation, changeReservationStatus } from "../utils/api";
 
 export default function SeatReservation({ reservations, tables }) {
   const history = useHistory();
   const { reservation_id } = useParams();
+
+  const abortController = new AbortController();
 
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
@@ -61,8 +63,8 @@ export default function SeatReservation({ reservations, tables }) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (validateSeat()) {
-      // API call to go here
-      seatReservation(reservation_id, tableId);
+      seatReservation(reservation_id, tableId, abortController.signal);
+      changeReservationStatus(reservation_id, "seated", abortController.signal);
       history.push("/dashboard");
     }
   };
