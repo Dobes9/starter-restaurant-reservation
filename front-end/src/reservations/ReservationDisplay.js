@@ -1,6 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { changeReservationStatus } from "../utils/api";
 
 export default function ReservationDisplay({ reservations }) {
+  const history = useHistory();
+  const abortController = new AbortController();
   const listReservations = reservations.map((reservation) => {
     const {
       reservation_id,
@@ -40,6 +44,28 @@ export default function ReservationDisplay({ reservations }) {
               Edit
             </button>
           </a>
+        </td>
+        <td>
+          <button
+            className="btn btn-danger"
+            type="button"
+            data-reservation-id-cancel={reservation_id}
+            onClick={() => {
+              const confirmation = window.confirm(
+                `Do you want to cancel this reservation? This cannot be undone.`
+              );
+              if (confirmation) {
+                changeReservationStatus(
+                  reservation_id,
+                  "cancelled",
+                  abortController.signal
+                );
+                history.go();
+              }
+            }}
+          >
+            Cancel
+          </button>
         </td>
       </tr>
     );
