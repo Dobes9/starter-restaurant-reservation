@@ -102,7 +102,7 @@ export async function changeReservationStatus(
   newStatus,
   signal
 ) {
-  const url = new URL(`/reservations/${reservation_id}/status`);
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
   const options = {
     method: "PUT",
     headers,
