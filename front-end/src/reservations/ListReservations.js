@@ -2,7 +2,7 @@ import React from "react";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationDisplay from "./ReservationDisplay";
 
-export default function listReservations({ reservations, reservationsError }) {
+export default function ListReservations({ reservations, reservationsError }) {
   return (
     <>
       <ErrorAlert error={reservationsError} />
@@ -18,6 +18,7 @@ export default function listReservations({ reservations, reservationsError }) {
             <th scope="col">Status</th>
             <th scope="col">Seat Table</th>
             <th scope="col">Edit</th>
+            <th scope="col">Cancel</th>
           </tr>
         </thead>
         <tbody>
