@@ -3,13 +3,13 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import NewReservation from "../reservations/NewReservation";
-import { today } from "../utils/date-time";
-import useQuery from "../utils/useQuery";
-import TableForm from "../tables/TableForm";
 import SeatReservation from "../reservations/SeatReservation";
 import EditReservation from "../reservations/EditReservation";
+import TableForm from "../tables/TableForm";
 import SearchByMobileNumber from "../search/SearchByMobileNumber";
 import { listTables, listReservations } from "../utils/api";
+import { today } from "../utils/date-time";
+import useQuery from "../utils/useQuery";
 
 /**
  * Defines all the routes for the application.
