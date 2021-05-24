@@ -3,11 +3,11 @@ import { useHistory } from "react-router-dom";
 import { changeReservationStatus, freeTable } from "../utils/api";
 
 export default function TablesDisplay({ tables }) {
+  const history = useHistory();
+  const abortController = new AbortController();
+
   const allTables = tables.map((table) => {
     const { table_id, table_name, capacity, status, reservation_id } = table;
-
-    const history = useHistory();
-    const abortController = new AbortController();
 
     const clickHandler = (event) => {
       event.preventDefault();
