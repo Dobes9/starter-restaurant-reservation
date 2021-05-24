@@ -49,7 +49,7 @@ export default function SeatReservation({ reservations, tables }) {
   });
 
   const formChangeHandler = ({ target }) => {
-    setTableId(target.value);
+    setTableId(Number(target.value));
   };
 
   function validateSeat() {
@@ -57,7 +57,7 @@ export default function SeatReservation({ reservations, tables }) {
 
     const foundTable = tables.find((table) => table.table_id === tableId);
     const foundReservation = reservations.find(
-      (reservation) => reservation.reservation_id === reservation_id
+      (reservation) => reservation.reservation_id === Number(reservation_id)
     );
 
     if (!foundTable) {
