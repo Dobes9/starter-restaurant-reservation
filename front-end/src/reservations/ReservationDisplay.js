@@ -1,10 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { changeReservationStatus } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
-export default function ReservationDisplay({ reservations }) {
+export default function ReservationDisplay({ reservations, reservationsError }) {
   const history = useHistory();
   const abortController = new AbortController();
+  
   const listReservations = reservations.map((reservation) => {
     const {
       reservation_id,
@@ -71,5 +73,28 @@ export default function ReservationDisplay({ reservations }) {
     );
   });
 
-  return <>{listReservations}</>;
+  return (
+    <>
+      <ErrorAlert error={reservationsError} />
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Mobile Number</th>
+            <th scope="col">Time</th>
+            <th scope="col">People</th>
+            <th scope="col">Status</th>
+            <th scope="col">Seat Table</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Cancel</th>
+          </tr>
+        </thead>
+        <tbody>
+          {listReservations}
+        </tbody>
+      </table>
+    </>
+  );
 }
