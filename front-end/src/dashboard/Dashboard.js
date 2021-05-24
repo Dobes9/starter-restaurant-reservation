@@ -4,7 +4,6 @@ import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time";
 import ReservationDisplay from "../reservations/ReservationDisplay";
 import TablesDisplay from "../tables/TablesDisplay";
-import ListReservations from "../reservations/ListReservations";
 
 /**
  * Defines the dashboard page.
@@ -27,7 +26,7 @@ function Dashboard({
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
-      <ListReservations
+      <ReservationDisplay
         reservations={reservations}
         reservationsError={reservationsError}
       />
