@@ -1,8 +1,9 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import ErrorAlert from "../layout/ErrorAlert";
 import { changeReservationStatus, freeTable } from "../utils/api";
 
-export default function TablesDisplay({ tables }) {
+export default function TablesDisplay({ tables, tablesError }) {
   const history = useHistory();
   const abortController = new AbortController();
 
@@ -50,5 +51,23 @@ export default function TablesDisplay({ tables }) {
     );
   });
 
-  return <>{allTables}</>;
+  return (
+    <>
+      <ErrorAlert error={tablesError} />
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Table Name</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Status</th>
+            <th scope="col">Reservation ID</th>
+            <th scope="col">Finish</th>
+          </tr>
+        </thead>
+        <tbody>{allTables}</tbody>
+      </table>
+    </>
+  );
 }
