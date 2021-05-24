@@ -22,9 +22,17 @@ function search(mobile_number) {
     .orderBy("reservation_date");
 }
 
+async function update(updatedReservation) {
+  return knex(tableName)
+    .where({ reservation_id: updatedReservation.reservation_id })
+    .update(updatedReservation, "*")
+    .then(() => read(updatedReservation.reservation_id));
+}
+
 module.exports = {
   list,
   create,
   read,
   search,
+  update,
 };
