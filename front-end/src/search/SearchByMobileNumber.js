@@ -51,13 +51,13 @@ export default function SearchByMobileNumber() {
         </div>
       </form>
       {displayResults ? (
-        results.length > 0 ? (
+        results.length ? (
           <ReservationDisplay
             reservations={results}
             reservationsError={reservationsError}
           />
         ) : (
-          <h4>No resevations found</h4>
+          <h4>No reservations found</h4>
         )
       ) : null}
     </main>
