@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { previous, today, next } from "../utils/date-time";
-import ReservationDisplay from "../reservations/ReservationDisplay";
+import ReservationsDisplay from "../reservations/ReservationsDisplay";
 import TablesDisplay from "../tables/TablesDisplay";
 
 /**
@@ -25,7 +25,7 @@ function Dashboard({
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
-      <ReservationDisplay
+      <ReservationsDisplay
         reservations={reservations}
         reservationsError={reservationsError}
       />

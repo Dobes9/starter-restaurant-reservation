@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReservationDisplay from "../reservations/ReservationDisplay";
+import ReservationsDisplay from "../reservations/ReservationsDisplay";
 import { listReservations } from "../utils/api";
 
 export default function SearchByMobileNumber() {
@@ -52,7 +52,7 @@ export default function SearchByMobileNumber() {
       </form>
       {displayResults ? (
         results.length ? (
-          <ReservationDisplay
+          <ReservationsDisplay
             reservations={results}
             reservationsError={reservationsError}
           />
