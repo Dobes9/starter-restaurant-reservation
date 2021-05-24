@@ -33,7 +33,7 @@ export default function TableForm() {
   };
 
   const validateFields = () => {
-    let foundError = null;
+    let foundError = [];
 
     if (formData.table_name === "" || formData.capacity === "") {
       foundError = { message: `Please fill out all fields.` };
@@ -42,7 +42,7 @@ export default function TableForm() {
     }
     setError(foundError);
 
-    return foundError.length !== null;
+    return foundError.length === 0;
   };
 
   return (
