@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ReservationDisplay from "../reservations/ReservationDisplay";
 import { listReservations } from "../utils/api";
-import useQuery from "../utils/useQuery";
 
 export default function SearchByMobileNumber() {
   const [mobile_number, setMobile_number] = useState(null);
