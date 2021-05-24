@@ -20,7 +20,7 @@ import { listTables, listReservations } from "../utils/api";
  */
 function Routes() {
   const query = useQuery();
-  const date = query.get("date");
+  const date = query.get("date") || today();
 
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
@@ -50,7 +50,7 @@ function Routes() {
       </Route>
       <Route path="/dashboard">
         <Dashboard
-          date={date ? date : today()}
+          date={date}
           reservations={reservations}
           reservationsError={reservationsError}
           tables={tables}
