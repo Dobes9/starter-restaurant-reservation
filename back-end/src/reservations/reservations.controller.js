@@ -159,7 +159,7 @@ async function create(req, res) {
 }
 
 async function reservationExists(req, res, next) {
-  const reservation = await service.read(req.body.data.reservation_id);
+  const reservation = await service.read(req.params.reservation_id);
   if (reservation) {
     res.locals.reservation = reservation;
     return next();
@@ -179,6 +179,12 @@ async function updateStatus(req, res) {
     ...res.locals.reservation,
     status: req.body.data.status,
   };
+  const data = await service.update(updatedReservation);
+  res.json({ data });
+}
+
+async function update(req, res) {
+  const updatedReservation = { ...req.body.data };
   const data = await service.update(updatedReservation);
   res.json({ data });
 }
@@ -203,5 +209,20 @@ module.exports = {
   updateStatus: [
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(updateStatus),
+  ],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasData,
+    hasFirstName,
+    hasLastName,
+    hasMobileNumber,
+    hasReservationDate,
+    hasReservationTime,
+    reservationForAFutureDate,
+    reservationNotOnTuesdays,
+    reservationTimeAfterOpen,
+    reservationTimeOneHourBeforeClose,
+    hasNumOfPeople,
+    asyncErrorBoundary(update),
   ],
 };
