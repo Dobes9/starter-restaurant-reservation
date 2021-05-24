@@ -46,54 +46,57 @@ export default function TableForm() {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <ErrorAlert error={error} />
-      <div className="row mb-3">
-        <div className="col-6 form-group">
-          <label className="form-label" htmlFor="table_name">
-            Table Name
-          </label>
-          <input
-            className="form-control"
-            id="table_name"
-            name="table_name"
-            type="text"
-            minLength="2"
-            value={formData.table_name}
-            onChange={formChangeHandler}
-            required
-          />
+    <main>
+      <h1>Create New table</h1>
+      <form onSubmit={submitHandler}>
+        <ErrorAlert error={error} />
+        <div className="row mb-3">
+          <div className="col-6 form-group">
+            <label className="form-label" htmlFor="table_name">
+              Table Name
+            </label>
+            <input
+              className="form-control"
+              id="table_name"
+              name="table_name"
+              type="text"
+              minLength="2"
+              value={formData.table_name}
+              onChange={formChangeHandler}
+              required
+            />
+          </div>
         </div>
-      </div>
-      <div className="row mb-3">
-        <div className="col-6 form-group">
-          <label className="form-label" htmlFor="capacity">
-            Table Capacity
-          </label>
-          <input
-            className="form-control"
-            id="capacity"
-            name="capacity"
-            type="number"
-            max="12"
-            min="1"
-            value={formData.capacity}
-            onChange={formChangeHandler}
-            required
-          />
+        <div className="row mb-3">
+          <div className="col-6 form-group">
+            <label className="form-label" htmlFor="capacity">
+              Table Capacity
+            </label>
+            <input
+              className="form-control"
+              id="capacity"
+              name="capacity"
+              type="number"
+              max="12"
+              min="1"
+              value={formData.capacity}
+              onChange={formChangeHandler}
+              required
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        <button
-          className="btn btn-secondary mx-1"
-          onClick={() => history.goBack()}
-        >
-          Cancel
-        </button>
-        <button className="btn btn-primary mx-1" type="submit">
-          Submit
-        </button>
-      </div>
-    </form>
+        <div>
+          <button
+            className="btn btn-secondary mx-1"
+            onClick={() => history.goBack()}
+          >
+            Cancel
+          </button>
+          <button className="btn btn-primary mx-1" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </main>
   );
 }

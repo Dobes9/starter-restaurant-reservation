@@ -28,7 +28,8 @@ export default function SearchByMobileNumber() {
   };
 
   return (
-    <>
+    <main>
+      <h1>Search</h1>
       <form onSubmit={submitHandler}>
         <div className="row mt-3">
           <div className="col-6 form-group">
@@ -60,6 +61,6 @@ export default function SearchByMobileNumber() {
           <h4>No resevations found</h4>
         )
       ) : null}
-    </>
+    </main>
   );
 }
