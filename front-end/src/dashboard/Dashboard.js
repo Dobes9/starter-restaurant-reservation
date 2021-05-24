@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time";
 import ReservationDisplay from "../reservations/ReservationDisplay";
 import TablesDisplay from "../tables/TablesDisplay";
@@ -33,23 +32,7 @@ function Dashboard({
 
       <h4>Tables</h4>
 
-      <ErrorAlert error={tablesError} />
-
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Table Name</th>
-            <th scope="col">Capacity</th>
-            <th scope="col">Status</th>
-            <th scope="col">Reservation ID</th>
-            <th scope="col">Finish</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TablesDisplay tables={tables} />
-        </tbody>
-      </table>
+      <TablesDisplay tables={tables} tablesError={tablesError} />
 
       <button
         className="btn btn-secondary mx-1"
