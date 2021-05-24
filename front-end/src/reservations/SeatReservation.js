@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { seatReservation, changeReservationStatus } from "../utils/api";
+import {
+  seatReservation,
+  changeReservationStatus,
+  readReservation,
+} from "../utils/api";
 
 export default function SeatReservation({ reservations, tables }) {
   const history = useHistory();
@@ -9,18 +13,36 @@ export default function SeatReservation({ reservations, tables }) {
 
   const abortController = new AbortController();
 
+  const [reservation, setReservation] = useState({});
+  const [reservationError, setReservationError] = useState(null);
   const [tableId, setTableId] = useState(0);
   const [errors, setErrors] = useState([]);
 
+  useEffect(() => {
+    readReservation(reservation_id, abortController.signal)
+      .then(setReservation)
+      .catch(setReservationError);
+    return () => abortController.abort();
+  }, [reservation_id]);
+
   if (!tables || !reservations) return null;
 
-  //   if (tables.length === 0) {
-  //     return <h4>No Tables to seat reservations</h4>;
-  //   }
+  const {
+    first_name,
+    last_name,
+    mobile_number,
+    reservation_date,
+    reservation_time,
+    people,
+  } = reservation;
+
+  const readableTime = new Date(
+    `${reservation_date}T${reservation_time}`
+  ).toLocaleTimeString();
 
   const tableOptions = tables.map((table) => {
     return (
-      <option value={table.table_id}>
+      <option key={table.table_id} value={table.table_id}>
         {table.table_name} - {table.capacity}
       </option>
     );
@@ -71,13 +93,37 @@ export default function SeatReservation({ reservations, tables }) {
 
   const displayErrors = () => {
     return errors.map((error, index) => {
-      <ErrorAlert key={index} error={error} />;
+      return <ErrorAlert key={index} error={error} />;
     });
   };
 
   return (
     <main>
       <h1>Seat Reservation</h1>
+      {reservationError ? (
+        <ErrorAlert error={reservationError} />
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Mobile Number</th>
+              <th scope="col">Time</th>
+              <th scope="col">People</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr key={reservation_id}>
+              <td>{first_name}</td>
+              <td>{last_name}</td>
+              <td>{mobile_number}</td>
+              <td>{reservation_time}</td>
+              <td>{people}</td>
+            </tr>
+          </tbody>
+        </table>
+      )}
       <form onSubmit={submitHandler}>
         <div>{displayErrors()}</div>
         <div className="row mb-3">
