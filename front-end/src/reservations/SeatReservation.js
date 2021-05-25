@@ -7,7 +7,7 @@ import {
   readReservation,
 } from "../utils/api";
 
-export default function SeatReservation({ reservations, tables }) {
+export default function SeatReservation({ tables }) {
   const history = useHistory();
   const { reservation_id } = useParams();
 
@@ -25,7 +25,7 @@ export default function SeatReservation({ reservations, tables }) {
     return () => abortController.abort();
   }, [reservation_id]);
 
-  if (!tables || !reservations) return null;
+  if (!tables) return null;
 
   const {
     first_name,
@@ -56,13 +56,10 @@ export default function SeatReservation({ reservations, tables }) {
     const foundErrors = [];
 
     const foundTable = tables.find((table) => table.table_id === tableId);
-    const foundReservation = reservations.find(
-      (reservation) => reservation.reservation_id === Number(reservation_id)
-    );
 
     if (!foundTable) {
       foundErrors.push({ message: `The table you selected does not exist.` });
-    } else if (!foundReservation) {
+    } else if (reservationError) {
       foundErrors.push({ message: `The reservation does not exist.` });
     } else {
       if (foundTable.status === "occupied") {
@@ -70,9 +67,9 @@ export default function SeatReservation({ reservations, tables }) {
           message: `The table you selected is currently occupied.`,
         });
       }
-      if (foundTable.capacity < foundReservation.people) {
+      if (foundTable.capacity < reservation.people) {
         foundErrors.push({
-          message: `The table you selected cannot seat ${foundReservation.people} people.`,
+          message: `The table you selected cannot seat ${reservation.people} people.`,
         });
       }
     }
@@ -118,7 +115,7 @@ export default function SeatReservation({ reservations, tables }) {
               <td>{first_name}</td>
               <td>{last_name}</td>
               <td>{mobile_number}</td>
-              <td>{reservation_time}</td>
+              <td>{readableTime}</td>
               <td>{people}</td>
             </tr>
           </tbody>
