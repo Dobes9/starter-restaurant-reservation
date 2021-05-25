@@ -183,6 +183,16 @@ async function updateStatus(req, res) {
   res.json({ data });
 }
 
+function isReservationStatusBooked(req, res, next) {
+  if (res.locals.reservation.status === "booked") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `Only reservations with a status of "booked" may be edited.`,
+  });
+}
+
 async function update(req, res) {
   const updatedReservation = { ...req.body.data };
   const data = await service.update(updatedReservation);
@@ -212,6 +222,7 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(reservationExists),
+    isReservationStatusBooked,
     hasData,
     hasFirstName,
     hasLastName,
