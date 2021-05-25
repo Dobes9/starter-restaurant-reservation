@@ -3,10 +3,13 @@ import { useHistory } from "react-router-dom";
 import { changeReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function ReservationsDisplay({ reservations, reservationsError }) {
+export default function ReservationsDisplay({
+  reservations,
+  reservationsError,
+}) {
   const history = useHistory();
   const abortController = new AbortController();
-  
+
   const listReservations = reservations.map((reservation) => {
     const {
       reservation_id,
@@ -41,33 +44,37 @@ export default function ReservationsDisplay({ reservations, reservationsError })
           ) : null}
         </td>
         <td>
-          <a href={`/reservations/${reservation_id}/edit`}>
-            <button className="btn btn-primary" type="button">
-              Edit
-            </button>
-          </a>
+          {status === "booked" ? (
+            <a href={`/reservations/${reservation_id}/edit`}>
+              <button className="btn btn-primary" type="button">
+                Edit
+              </button>
+            </a>
+          ) : null}
         </td>
         <td>
-          <button
-            className="btn btn-danger"
-            type="button"
-            data-reservation-id-cancel={reservation_id}
-            onClick={() => {
-              const confirmation = window.confirm(
-                `Do you want to cancel this reservation? This cannot be undone.`
-              );
-              if (confirmation) {
-                changeReservationStatus(
-                  reservation_id,
-                  "cancelled",
-                  abortController.signal
+          {status === "booked" ? (
+            <button
+              className="btn btn-danger"
+              type="button"
+              data-reservation-id-cancel={reservation_id}
+              onClick={() => {
+                const confirmation = window.confirm(
+                  `Do you want to cancel this reservation? This cannot be undone.`
                 );
-                history.go();
-              }
-            }}
-          >
-            Cancel
-          </button>
+                if (confirmation) {
+                  changeReservationStatus(
+                    reservation_id,
+                    "cancelled",
+                    abortController.signal
+                  );
+                  history.go(0);
+                }
+              }}
+            >
+              Cancel
+            </button>
+          ) : null}
         </td>
       </tr>
     );
@@ -91,9 +98,7 @@ export default function ReservationsDisplay({ reservations, reservationsError })
             <th scope="col">Cancel</th>
           </tr>
         </thead>
-        <tbody>
-          {listReservations}
-        </tbody>
+        <tbody>{listReservations}</tbody>
       </table>
     </>
   );
