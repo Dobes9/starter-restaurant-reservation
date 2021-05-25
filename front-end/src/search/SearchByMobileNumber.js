@@ -55,6 +55,7 @@ export default function SearchByMobileNumber() {
           <ReservationsDisplay
             reservations={results}
             reservationsError={reservationsError}
+            search={true}
           />
         ) : (
           <h4>No reservations found</h4>
