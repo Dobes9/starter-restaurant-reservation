@@ -33,7 +33,7 @@ export default function ReservationsDisplay({
         <td>{mobile_number}</td>
         <td>{readableTime}</td>
         <td>{people}</td>
-        <td>{status}</td>
+        <td data-reservation-id-status={reservation_id}>{status}</td>
         <td>
           {status === "booked" ? (
             <a href={`/reservations/${reservation_id}/seat`}>
