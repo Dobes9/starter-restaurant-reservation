@@ -34,12 +34,12 @@ export default function TablesDisplay({ tables, tablesError }) {
               className="btn btn-warning"
               type="button"
               data-table-id-finish={table_id}
-              onClick={() => {
+              onClick={(event) => {
                 const confirmation = window.confirm(
                   `Is this table ready to seat new guests? This cannot be undone.`
                 );
                 if (confirmation) {
-                  clickHandler();
+                  clickHandler(event);
                 }
               }}
             >
