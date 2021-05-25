@@ -2,7 +2,7 @@ const knex = require("../db/connection");
 const tableName = "tables";
 
 async function list() {
-  return knex(tableName);
+  return knex(tableName).orderBy("table_name");
 }
 
 function create(newTable) {
