@@ -8,7 +8,7 @@ import {
 } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-export default function ReservationForm() {
+export default function ReservationForm({ edit }) {
   const history = useHistory();
   const { path, params } = useRouteMatch();
   const { reservation_id } = params;
@@ -42,18 +42,19 @@ export default function ReservationForm() {
     });
   };
 
-  const submitHandler = (event) => {
+  const submitNewReservation = (event) => {
     event.preventDefault();
-    if (path === `reservations/new`) {
-      if (validateDate()) {
-        createReservation(formData, abortController.signal);
-        history.push(`/dashboard?date=${formData.reservation_date}`).go(0);
-      }
-    } else {
-      if (validateDate()) {
-        updateReservation(formData, abortController.signal);
-        history.goBack().go(0);
-      }
+    if (validateDate()) {
+      createReservation(formData, abortController.signal);
+      history.push(`/dashboard?date=${formData.reservation_date}`);
+    }
+  };
+
+  const submitUpdatedReservation = (event) => {
+    event.preventDefault();
+    if (validateDate()) {
+      updateReservation(formData, abortController.signal);
+      history.goBack();
     }
   };
 
@@ -120,7 +121,7 @@ export default function ReservationForm() {
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={edit ? submitUpdatedReservation : submitNewReservation}>
       <div>{displayErrors()}</div>
       <div className="row mb-3">
         <div className="col-6 form-group">
