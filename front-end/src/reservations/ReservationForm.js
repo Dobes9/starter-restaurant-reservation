@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { today } from "../utils/date-time";
 import {
   createReservation,
@@ -10,8 +10,7 @@ import ErrorAlert from "../layout/ErrorAlert";
 
 export default function ReservationForm({ edit }) {
   const history = useHistory();
-  const { path, params } = useRouteMatch();
-  const { reservation_id } = params;
+  const { reservation_id } = useParams();
   const abortController = new AbortController();
 
   const initialFormData = {
