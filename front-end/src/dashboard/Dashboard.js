@@ -28,6 +28,7 @@ function Dashboard({
       <ReservationsDisplay
         reservations={reservations}
         reservationsError={reservationsError}
+        search={false}
       />
 
       <h4>Tables</h4>
