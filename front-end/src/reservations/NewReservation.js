@@ -5,7 +5,7 @@ export default function NewReservation() {
   return (
     <main>
       <h1>New Reservation</h1>
-      <ReservationForm />
+      <ReservationForm edit={false} />
     </main>
   );
 }
