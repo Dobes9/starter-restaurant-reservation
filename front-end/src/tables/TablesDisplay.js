@@ -31,7 +31,7 @@ export default function TablesDisplay({ tables, tablesError }) {
         <td>
           {status === "occupied" ? (
             <button
-              className="btn btn-primary"
+              className="btn btn-warning"
               type="button"
               data-table-id-finish={table_id}
               onClick={() => {
