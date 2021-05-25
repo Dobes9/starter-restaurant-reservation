@@ -47,12 +47,12 @@ export default function ReservationForm() {
     if (path === `reservations/new`) {
       if (validateDate()) {
         createReservation(formData, abortController.signal);
-        history.push(`/dashboard?date=${formData.reservation_date}`);
+        history.push(`/dashboard?date=${formData.reservation_date}`).go(0);
       }
     } else {
       if (validateDate()) {
         updateReservation(formData, abortController.signal);
-        history.goBack();
+        history.goBack().go(0);
       }
     }
   };
