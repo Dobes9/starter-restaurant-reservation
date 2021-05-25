@@ -84,7 +84,7 @@ export default function SeatReservation({ tables }) {
     if (validateSeat()) {
       seatReservation(reservation_id, tableId, abortController.signal);
       changeReservationStatus(reservation_id, "seated", abortController.signal);
-      history.push("/dashboard");
+      history.push("/dashboard").go(0);
     }
   };
 
