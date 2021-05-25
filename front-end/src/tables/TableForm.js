@@ -47,7 +47,7 @@ export default function TableForm() {
 
   return (
     <main>
-      <h1>Create New table</h1>
+      <h1>Create New Table</h1>
       <form onSubmit={submitHandler}>
         <ErrorAlert error={error} />
         <div className="row mb-3">
