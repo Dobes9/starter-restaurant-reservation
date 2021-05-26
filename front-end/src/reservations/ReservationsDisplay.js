@@ -13,7 +13,7 @@ export default function ReservationsDisplay({
 
   const listReservations = reservations
     .filter((reservation) => {
-      return search ? true : reservation.status !== "finished";
+      return search ? true : ["booked", "seated"].includes(reservation.status);
     })
     .map((reservation) => {
       const {
