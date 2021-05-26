@@ -41,18 +41,24 @@ export default function ReservationForm({ edit }) {
     });
   };
 
-  const submitNewReservation = (event) => {
+  const submitNewReservation = async (event) => {
     event.preventDefault();
     if (validateDate()) {
-      createReservation(formData, abortController.signal);
+      const newReservation = await createReservation(
+        formData,
+        abortController.signal
+      );
       history.push(`/dashboard?date=${formData.reservation_date}`);
     }
   };
 
-  const submitUpdatedReservation = (event) => {
+  const submitUpdatedReservation = async (event) => {
     event.preventDefault();
     if (validateDate()) {
-      updateReservation(formData, abortController.signal);
+      const updatedReservation = await updateReservation(
+        formData,
+        abortController.signal
+      );
       history.goBack();
     }
   };
