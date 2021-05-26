@@ -30,6 +30,15 @@ export default function ReservationsDisplay({
         `${reservation_date}T${reservation_time}`
       ).toLocaleTimeString();
 
+      const handleCancelReservation = async () => {
+        const cancelledReservation = await changeReservationStatus(
+          reservation_id,
+          "cancelled",
+          abortController.signal
+        );
+        history.go(0);
+      };
+
       return (
         <tr key={reservation_id}>
           <td>{reservation_id}</td>
@@ -68,12 +77,7 @@ export default function ReservationsDisplay({
                     `Do you want to cancel this reservation? This cannot be undone.`
                   );
                   if (confirmation) {
-                    changeReservationStatus(
-                      reservation_id,
-                      "cancelled",
-                      abortController.signal
-                    );
-                    history.go(0);
+                    handleCancelReservation();
                   }
                 }}
               >
