@@ -23,11 +23,10 @@ export default function TableForm() {
     });
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
     if (validateFields()) {
-      // API function to go here
-      createTable(formData, abortController.signal);
+      const newTable = await createTable(formData, abortController.signal);
       history.push(`/dashboard`);
     }
   };
