@@ -36,7 +36,7 @@ function hasFirstName(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have a first name`,
+    message: `first_name`,
   });
 }
 
@@ -47,7 +47,7 @@ function hasLastName(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have a last name`,
+    message: `last_name`,
   });
 }
 
@@ -58,7 +58,7 @@ function hasMobileNumber(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have a mobile number`,
+    message: `mobile_number`,
   });
 }
 
@@ -70,7 +70,7 @@ function hasReservationDate(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have a date`,
+    message: `reservation_date`,
   });
 }
 
@@ -107,7 +107,7 @@ function hasReservationTime(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have a time`,
+    message: `reservation_time`,
   });
 }
 
@@ -139,6 +139,17 @@ function reservationTimeOneHourBeforeClose(req, res, next) {
   return next();
 }
 
+function peoplePropIsANumber(req, res, next) {
+  const { people } = req.body.data;
+  if (typeof people === "number") {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `people`,
+  });
+}
+
 function hasNumOfPeople(req, res, next) {
   const { people } = req.body.data;
   if (people >= 1) {
@@ -146,7 +157,7 @@ function hasNumOfPeople(req, res, next) {
   }
   next({
     status: 400,
-    message: `Reservation must have at least 1 person`,
+    message: `people`,
   });
 }
 
@@ -166,7 +177,7 @@ async function reservationExists(req, res, next) {
   }
   next({
     status: 404,
-    message: `Reservation cannot be found.`,
+    message: `${req.params.reservation_id}`,
   });
 }
 
@@ -212,6 +223,7 @@ module.exports = {
     reservationNotOnTuesdays,
     reservationTimeAfterOpen,
     reservationTimeOneHourBeforeClose,
+    peoplePropIsANumber,
     hasNumOfPeople,
     asyncErrorBoundary(create),
   ],
@@ -222,7 +234,7 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(reservationExists),
-    isReservationStatusBooked,
+    //isReservationStatusBooked,
     hasData,
     hasFirstName,
     hasLastName,
@@ -233,6 +245,7 @@ module.exports = {
     reservationNotOnTuesdays,
     reservationTimeAfterOpen,
     reservationTimeOneHourBeforeClose,
+    peoplePropIsANumber,
     hasNumOfPeople,
     asyncErrorBoundary(update),
   ],
