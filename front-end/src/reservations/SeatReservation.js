@@ -79,11 +79,19 @@ export default function SeatReservation({ tables }) {
     return foundErrors.length === 0;
   }
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
     if (validateSeat()) {
-      seatReservation(reservation_id, tableId, abortController.signal);
-      changeReservationStatus(reservation_id, "seated", abortController.signal);
+      const seatedTable = await seatReservation(
+        reservation_id,
+        tableId,
+        abortController.signal
+      );
+      const seatedReservation = await changeReservationStatus(
+        reservation_id,
+        "seated",
+        abortController.signal
+      );
       history.push(`/dashboard?date=${reservation.reservation_date}`);
     }
   };
