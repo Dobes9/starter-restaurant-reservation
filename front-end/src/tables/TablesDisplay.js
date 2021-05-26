@@ -10,14 +10,14 @@ export default function TablesDisplay({ tables, tablesError }) {
   const allTables = tables.map((table) => {
     const { table_id, table_name, capacity, status, reservation_id } = table;
 
-    const clickHandler = (event) => {
+    const finishReservationHandler = async (event) => {
       event.preventDefault();
-      changeReservationStatus(
+      const finishedReservation = await changeReservationStatus(
         reservation_id,
         "finished",
         abortController.signal
       );
-      freeTable(table_id, abortController.signal);
+      const freedTable = await freeTable(table_id, abortController.signal);
       history.go(0);
     };
 
@@ -39,7 +39,7 @@ export default function TablesDisplay({ tables, tablesError }) {
                   `Is this table ready to seat new guests? This cannot be undone.`
                 );
                 if (confirmation) {
-                  clickHandler(event);
+                  finishReservationHandler(event);
                 }
               }}
             >
