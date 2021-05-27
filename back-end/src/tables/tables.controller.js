@@ -147,7 +147,7 @@ async function destroy(req, res) {
     reservation_id: null,
   };
   const data = await TablesService.update(updatedTable);
-  res.status(204).json({ data });
+  res.json({ data });
 }
 
 module.exports = {
