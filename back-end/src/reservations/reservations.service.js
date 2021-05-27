@@ -4,6 +4,7 @@ const tableName = "reservations";
 async function list(reservation_date) {
   return knex(tableName)
     .where({ reservation_date })
+    //.whereNot({ status: "finished" })
     .orderBy("reservation_time");
 }
 
