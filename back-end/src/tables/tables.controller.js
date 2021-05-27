@@ -6,6 +6,10 @@ async function list(req, res) {
   res.json({ data: await TablesService.list() });
 }
 
+function read(req, res) {
+  res.json({ data: res.locals.table });
+}
+
 function hasData(req, res, next) {
   if (req.body.data) {
     return next();
@@ -112,6 +116,7 @@ async function destroy(req, res) {
 
 module.exports = {
   list: asyncErrorBoundary(list),
+  read: [asyncErrorBoundary(tableExists), read],
   create: [
     hasData,
     tableNameHasAtLeast2Chars,
