@@ -71,6 +71,20 @@ async function tableExists(req, res, next) {
   });
 }
 
+async function reservationExists(req, res, next) {
+  const reservation = await ReservationsService.read(
+    req.body.data.reservation_id
+  );
+  if (reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `${req.body.data.reservation_id}`,
+  });
+}
+
 function isTableFree(req, res, next) {
   if (res.locals.table.status === "free") {
     return next();
@@ -138,6 +152,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(tableExists),
     isTableFree,
+    asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
     asyncErrorBoundary(update),
   ],
