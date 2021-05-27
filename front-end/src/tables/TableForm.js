@@ -9,7 +9,7 @@ export default function TableForm() {
 
   const initialFormData = {
     table_name: "",
-    capacity: 1,
+    capacity: 0,
     status: "free",
   };
 
@@ -34,8 +34,10 @@ export default function TableForm() {
   const validateFields = () => {
     let foundError = [];
 
-    if (formData.table_name === "" || formData.capacity === "") {
-      foundError = { message: `Please fill out all fields.` };
+    if (formData.table_name === "") {
+      foundError = { message: `Please fill out table name.` };
+    } else if (!formData.capacity) {
+      foundError = { message: `Please fill out table capacity.` };
     } else if (formData.table_name.length < 2) {
       foundError = { message: `Table name must be at least 2 characters` };
     }
