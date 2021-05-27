@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { changeReservationStatus, freeTable } from "../utils/api";
+import { freeTable } from "../utils/api";
 
 export default function TablesDisplay({ tables, tablesError }) {
   const history = useHistory();
@@ -12,13 +12,9 @@ export default function TablesDisplay({ tables, tablesError }) {
 
     const finishReservationHandler = async (event) => {
       event.preventDefault();
-      const finishedReservation = await changeReservationStatus(
-        reservation_id,
-        "finished",
-        abortController.signal
-      );
-      const freedTable = await freeTable(table_id, abortController.signal);
+      await freeTable(table_id, reservation_id, abortController.signal);
       history.go(0);
+      return () => abortController.abort();
     };
 
     return (
@@ -38,9 +34,7 @@ export default function TablesDisplay({ tables, tablesError }) {
                 const confirmation = window.confirm(
                   `Is this table ready to seat new guests? This cannot be undone.`
                 );
-                if (confirmation) {
-                  finishReservationHandler(event);
-                }
+                return confirmation ? finishReservationHandler(event) : null;
               }}
             >
               Finish
