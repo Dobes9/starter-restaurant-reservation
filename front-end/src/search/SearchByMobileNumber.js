@@ -12,17 +12,20 @@ export default function SearchByMobileNumber() {
     setMobile_number(target.value);
   };
 
-  function listResults() {
+  async function listResults() {
     const abortController = new AbortController();
-    listReservations({ mobile_number: mobile_number }, abortController.signal)
+    await listReservations(
+      { mobile_number: mobile_number },
+      abortController.signal
+    )
       .then(setResults)
       .catch(setReservationsError);
     return () => abortController.abort();
   }
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    listResults();
+    await listResults();
     setDisplayResults(true);
   };
 
