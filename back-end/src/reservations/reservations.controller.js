@@ -76,10 +76,10 @@ function hasReservationDate(req, res, next) {
 
 function reservationNotOnTuesdays(req, res, next) {
   const reservationDate = new Date(res.locals.reservation_date);
-  if (reservationDate.getUTCDay === 2) {
+  if (reservationDate.getUTCDay() === 2) {
     next({
       status: 400,
-      message: `Reservation cannot be made for a Tuesday`,
+      message: `closed`,
     });
   }
   return next();
@@ -93,7 +93,7 @@ function reservationForAFutureDate(req, res, next) {
   if (reservationDate < todaysDate) {
     next({
       status: 400,
-      message: `Reservation cannot be made for a date in the past`,
+      message: `future`,
     });
   }
   return next();
