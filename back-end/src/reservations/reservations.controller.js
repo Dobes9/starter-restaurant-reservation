@@ -149,8 +149,9 @@ function reservationTimeAfterOpen(req, res, next) {
 function reservationTimeOneHourBeforeClose(req, res, next) {
   const reservationTime = new Date(req.body.data.reservation_time);
   if (
-    reservationTime.getHours() > 21 ||
-    (reservationTime.getHours() === 21 && reservationTime.getMinutes() > 30)
+    reservationTime.getUTCHours() > 21 ||
+    (reservationTime.getUTCHours() === 21 &&
+      reservationTime.getUTCMinutes() > 30)
   ) {
     next({
       status: 400,
@@ -292,6 +293,8 @@ module.exports = {
     reservationTimeOneHourBeforeClose,
     peoplePropIsANumber,
     hasNumOfPeople,
+    isStatusSeated,
+    isStatusFinished,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
