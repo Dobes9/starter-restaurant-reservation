@@ -26,8 +26,9 @@ export default function TableForm() {
   const submitHandler = async (event) => {
     event.preventDefault();
     if (validateFields()) {
-      const newTable = await createTable(formData, abortController.signal);
+      await createTable(formData, abortController.signal);
       history.push(`/dashboard`);
+      return () => abortController.abort();
     }
   };
 
