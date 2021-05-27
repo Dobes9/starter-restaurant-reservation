@@ -184,6 +184,17 @@ function read(req, res) {
   res.json({ data: res.locals.reservation });
 }
 
+function validStatus(req, res, next) {
+  const { status } = req.body.data;
+  if (["booked", "seated", "finished", "cancelled"].includes(status)) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `unknown`,
+  });
+}
+
 async function updateStatus(req, res) {
   const updatedReservation = {
     ...res.locals.reservation,
@@ -229,6 +240,7 @@ module.exports = {
   read: [asyncErrorBoundary(reservationExists), read],
   updateStatus: [
     asyncErrorBoundary(reservationExists),
+    validStatus,
     asyncErrorBoundary(updateStatus),
   ],
   update: [
