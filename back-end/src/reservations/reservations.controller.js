@@ -160,6 +160,38 @@ function hasNumOfPeople(req, res, next) {
   });
 }
 
+function hasStatusProp(req, res, next) {
+  const { status } = req.body.data;
+  if (status) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `status`,
+  });
+}
+
+function isStatusSeated(req, res, next) {
+  const { status } = req.body.data;
+  if (status === "seated") {
+    next({
+      status: 400,
+      message: `seated`,
+    });
+  }
+  return next();
+}
+
+function isStatusFinished(req, res, next) {
+  const { status } = req.body.data;
+  if (status === "finished") {
+    next({
+      status: 400,
+      message: `finished`,
+    });
+  }
+}
+
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
 
@@ -235,6 +267,9 @@ module.exports = {
     reservationTimeOneHourBeforeClose,
     peoplePropIsANumber,
     hasNumOfPeople,
+    hasStatusProp,
+    isStatusSeated,
+    isStatusFinished,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
