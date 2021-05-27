@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import {
-  seatReservation,
-  changeReservationStatus,
-  readReservation,
-} from "../utils/api";
+import { seatReservation, readReservation } from "../utils/api";
 
 export default function SeatReservation({ tables }) {
   const history = useHistory();
@@ -82,25 +78,21 @@ export default function SeatReservation({ tables }) {
   const submitHandler = async (event) => {
     event.preventDefault();
     if (validateSeat()) {
-      const seatedTable = await seatReservation(
-        reservation_id,
-        tableId,
-        abortController.signal
-      );
-      const seatedReservation = await changeReservationStatus(
-        reservation_id,
-        "seated",
-        abortController.signal
-      );
+      await seatReservation(reservation_id, tableId, abortController.signal);
       history.push(`/dashboard?date=${reservation.reservation_date}`);
+      return () => abortController.abort();
     }
   };
 
-  const displayErrors = () => {
-    return errors.map((error, index) => {
-      return <ErrorAlert key={index} error={error} />;
-    });
-  };
+  // const displayErrors = () => {
+  //   return errors.map((error, index) => {
+  //     return <ErrorAlert key={index} error={error} />;
+  //   });
+  // };
+
+  const displayErrors = errors.map((error, index) => {
+    return <ErrorAlert key={index} error={error} />;
+  });
 
   return (
     <main>
@@ -130,7 +122,7 @@ export default function SeatReservation({ tables }) {
         </table>
       )}
       <form onSubmit={submitHandler}>
-        <div>{displayErrors()}</div>
+        <div>{displayErrors}</div>
         <div className="row mb-3">
           <div className="col-6 form-group">
             <label className="form-label" htmlFor="table_id">
