@@ -71,6 +71,17 @@ async function tableExists(req, res, next) {
   });
 }
 
+function reservationIdExists(req, res, next) {
+  const { reservation_id } = req.body.data;
+  if (reservation_id) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `reservation_id`,
+  });
+}
+
 async function reservationExists(req, res, next) {
   const reservation = await ReservationsService.read(
     req.body.data.reservation_id
@@ -152,6 +163,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(tableExists),
     isTableFree,
+    reservationIdExists,
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
     asyncErrorBoundary(update),
