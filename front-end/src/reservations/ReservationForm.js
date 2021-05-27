@@ -44,28 +44,24 @@ export default function ReservationForm({ edit }) {
   const submitNewReservation = async (event) => {
     event.preventDefault();
     if (validateDate()) {
-      const newReservation = await createReservation(
-        formData,
-        abortController.signal
-      );
+      await createReservation(formData, abortController.signal);
       history.push(`/dashboard?date=${formData.reservation_date}`);
+      return () => abortController.abort();
     }
   };
 
   const submitUpdatedReservation = async (event) => {
     event.preventDefault();
     if (validateDate()) {
-      const updatedReservation = await updateReservation(
-        formData,
-        abortController.signal
-      );
+      await updateReservation(formData, abortController.signal);
       history.goBack();
+      return () => abortController.abort();
     }
   };
 
   function validateDate() {
     const reservationDate = new Date(
-      `${formData.reservation_date}T${formData.reservation_time}:00.000`
+      `${formData.reservation_date}T${formData.reservation_time}:00`
     );
     const todaysDate = new Date(today());
 
@@ -119,15 +115,17 @@ export default function ReservationForm({ edit }) {
     return foundErrors.length === 0;
   }
 
-  const displayErrors = () => {
-    return dateErrors.map((error, index) => (
-      <ErrorAlert key={index} error={error} />
-    ));
-  };
+  // const displayErrors = () => {
+  //   return dateErrors.map((error) => <ErrorAlert error={error} />);
+  // };
+
+  const displayErrors = dateErrors.map((error, index) => {
+    return <ErrorAlert key={index} error={error} />;
+  });
 
   return (
     <form onSubmit={edit ? submitUpdatedReservation : submitNewReservation}>
-      <div>{displayErrors()}</div>
+      <div>{displayErrors}</div>
       <div className="row mb-3">
         <div className="col-6 form-group">
           <label className="form-label" htmlFor="first_name">
