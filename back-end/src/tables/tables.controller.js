@@ -55,7 +55,7 @@ async function create(req, res) {
   const newTable = await TablesService.create(req.body.data);
 
   res.status(201).json({
-    data: newTable,
+    data: newTable[0],
   });
 }
 
@@ -106,12 +106,8 @@ function isTableFree(req, res, next) {
   });
 }
 
-async function isTableCapacityGreaterThanReservationSize(req, res, next) {
-  const reservation = await ReservationsService.read(
-    req.body.data.reservation_id
-  );
-  if (res.locals.table.capacity >= reservation.people) {
-    res.locals.reservation = reservation;
+function isTableCapacityGreaterThanReservationSize(req, res, next) {
+  if (res.locals.table.capacity >= res.locals.reservation.people) {
     return next();
   }
   next({
@@ -177,7 +173,7 @@ module.exports = {
     reservationIdExists,
     asyncErrorBoundary(reservationExists),
     isReservationSeated,
-    asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
+    isTableCapacityGreaterThanReservationSize,
     asyncErrorBoundary(update),
   ],
   destroy: [
