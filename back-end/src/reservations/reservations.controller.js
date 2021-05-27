@@ -65,7 +65,6 @@ function hasMobileNumber(req, res, next) {
 function hasReservationDate(req, res, next) {
   const { reservation_date } = req.body.data;
   if (reservation_date) {
-    res.locals.reservation_date = reservation_date;
     return next();
   }
   next({
@@ -75,7 +74,7 @@ function hasReservationDate(req, res, next) {
 }
 
 function reservationNotOnTuesdays(req, res, next) {
-  const reservationDate = new Date(res.locals.reservation_date);
+  const reservationDate = new Date(req.body.data.reservation_date);
   if (reservationDate.getUTCDay() === 2) {
     next({
       status: 400,
@@ -87,7 +86,7 @@ function reservationNotOnTuesdays(req, res, next) {
 
 function reservationForAFutureDate(req, res, next) {
   const reservationDate = new Date(
-    `${res.locals.reservation_date}T${res.locals.reservation_time}:00.000`
+    `${req.body.data.reservation_date}T${req.body.data.reservation_time}:00.000`
   );
   const todaysDate = new Date();
   if (reservationDate < todaysDate) {
@@ -102,6 +101,29 @@ function reservationForAFutureDate(req, res, next) {
 function hasReservationTime(req, res, next) {
   const { reservation_time } = req.body.data;
   if (reservation_time) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `reservation_time`,
+  });
+}
+
+function isProperDate(req, res, next) {
+  if (req.body.data.reservation_date.length === 10) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `reservation_date`,
+  });
+}
+
+function isProperTime(req, res, next) {
+  const reservationTime = new Date(
+    `${req.body.data.reservation_date}T${req.body.data.reservation_time}`
+  );
+  if (typeof reservationTime.getHours() === "function") {
     return next();
   }
   next({
@@ -190,13 +212,14 @@ function isStatusFinished(req, res, next) {
       message: `finished`,
     });
   }
+  return next();
 }
 
 async function create(req, res) {
   const newReservation = await service.create(req.body.data);
 
   res.status(201).json({
-    data: newReservation,
+    data: newReservation[0],
   });
 }
 
@@ -236,14 +259,14 @@ async function updateStatus(req, res) {
   res.json({ data });
 }
 
-function isReservationStatusBooked(req, res, next) {
-  if (res.locals.reservation.status === "booked") {
-    return next();
+function isReservationStatusFinished(req, res, next) {
+  if (res.locals.reservation.status === "finished") {
+    next({
+      status: 400,
+      message: `finished`,
+    });
   }
-  next({
-    status: 400,
-    message: `Only reservations with a status of "booked" may be edited.`,
-  });
+  return next();
 }
 
 async function update(req, res) {
@@ -260,33 +283,34 @@ module.exports = {
     hasLastName,
     hasMobileNumber,
     hasReservationDate,
+    //isProperDate,
     hasReservationTime,
+    //isProperTime,
     reservationForAFutureDate,
     reservationNotOnTuesdays,
     reservationTimeAfterOpen,
     reservationTimeOneHourBeforeClose,
     peoplePropIsANumber,
     hasNumOfPeople,
-    hasStatusProp,
-    isStatusSeated,
-    isStatusFinished,
     asyncErrorBoundary(create),
   ],
   read: [asyncErrorBoundary(reservationExists), read],
   updateStatus: [
     asyncErrorBoundary(reservationExists),
     validStatus,
+    isReservationStatusFinished,
     asyncErrorBoundary(updateStatus),
   ],
   update: [
     asyncErrorBoundary(reservationExists),
-    //isReservationStatusBooked,
     hasData,
     hasFirstName,
     hasLastName,
     hasMobileNumber,
     hasReservationDate,
+    //isProperDate,
     hasReservationTime,
+    //isProperTime,
     reservationForAFutureDate,
     reservationNotOnTuesdays,
     reservationTimeAfterOpen,
