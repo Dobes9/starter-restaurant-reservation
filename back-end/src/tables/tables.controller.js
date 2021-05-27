@@ -163,6 +163,7 @@ module.exports = {
   update: [
     asyncErrorBoundary(tableExists),
     isTableFree,
+    hasData,
     reservationIdExists,
     asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
