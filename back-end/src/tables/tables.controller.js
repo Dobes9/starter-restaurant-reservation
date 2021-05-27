@@ -136,7 +136,7 @@ function isTableOccupied(req, res, next) {
   }
   next({
     status: 400,
-    message: `Table is currently free.`,
+    message: `not occupied`,
   });
 }
 
