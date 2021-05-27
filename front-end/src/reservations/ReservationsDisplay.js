@@ -31,12 +31,13 @@ export default function ReservationsDisplay({
       ).toLocaleTimeString();
 
       const handleCancelReservation = async () => {
-        const cancelledReservation = await changeReservationStatus(
+        await changeReservationStatus(
           reservation_id,
           "cancelled",
           abortController.signal
         );
         history.go(0);
+        return () => abortController.abort();
       };
 
       return (
@@ -76,9 +77,7 @@ export default function ReservationsDisplay({
                   const confirmation = window.confirm(
                     `Do you want to cancel this reservation? This cannot be undone.`
                   );
-                  if (confirmation) {
-                    handleCancelReservation();
-                  }
+                  return confirmation ? handleCancelReservation() : null;
                 }}
               >
                 Cancel
