@@ -132,8 +132,14 @@ async function update(req, res) {
     status: "occupied",
     reservation_id: res.locals.reservation.reservation_id,
   };
-  const data = await TablesService.update(updatedTable);
-  res.json({ data });
+  const updatedReservation = {
+    ...res.locals.reservation,
+    status: "seated",
+  };
+  const data1 = await TablesService.update(updatedTable);
+  const data2 = await ReservationsService.update(updatedReservation);
+  res.json({ data1 });
+  res.json({ data2 });
 }
 
 function isTableOccupied(req, res, next) {
@@ -152,8 +158,14 @@ async function destroy(req, res) {
     status: "free",
     reservation_id: null,
   };
-  const data = await TablesService.update(updatedTable);
-  res.json({ data });
+  const updatedReservation = {
+    ...res.locals.reservation,
+    status: "finished",
+  };
+  const data1 = await TablesService.update(updatedTable);
+  const data2 = await ReservationsService.update(updatedReservation);
+  res.json({ data1 });
+  res.json({ data2 });
 }
 
 module.exports = {
@@ -179,6 +191,9 @@ module.exports = {
   destroy: [
     asyncErrorBoundary(tableExists),
     isTableOccupied,
+    hasData,
+    reservationIdExists,
+    asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(destroy),
   ],
 };
