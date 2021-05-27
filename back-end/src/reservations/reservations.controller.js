@@ -102,7 +102,6 @@ function reservationForAFutureDate(req, res, next) {
 function hasReservationTime(req, res, next) {
   const { reservation_time } = req.body.data;
   if (reservation_time) {
-    res.locals.reservation_time = reservation_time;
     return next();
   }
   next({
@@ -112,28 +111,28 @@ function hasReservationTime(req, res, next) {
 }
 
 function reservationTimeAfterOpen(req, res, next) {
-  const reservationTime = new Date(res.locals.reservation_time);
+  const reservationTime = new Date(req.body.data.reservation_time);
   if (
     reservationTime.getHours() < 10 ||
     (reservationTime.getHours() === 10 && reservationTime.getMinutes() < 30)
   ) {
     next({
       status: 400,
-      message: `Reservation must be made for after 10:30 AM`,
+      message: `reservation_time`,
     });
   }
   return next();
 }
 
 function reservationTimeOneHourBeforeClose(req, res, next) {
-  const reservationTime = new Date(res.locals.reservation_time);
+  const reservationTime = new Date(req.body.data.reservation_time);
   if (
     reservationTime.getHours() > 21 ||
     (reservationTime.getHours() === 21 && reservationTime.getMinutes() > 30)
   ) {
     next({
       status: 400,
-      message: `Reservation must be made for at least an hour before close (10:30 PM)`,
+      message: `reservation_time`,
     });
   }
   return next();
