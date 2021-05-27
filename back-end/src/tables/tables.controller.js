@@ -20,13 +20,24 @@ function hasData(req, res, next) {
   });
 }
 
+function tableNamePropExists(req, res, next) {
+  const { table_name } = req.body.data;
+  if (table_name) {
+    return next();
+  }
+  next({
+    status: 400,
+    message: `table_name`,
+  });
+}
+
 function tableNameHasAtLeast2Chars(req, res, next) {
   if (req.body.data.table_name.length >= 2) {
     return next();
   }
   next({
     status: 400,
-    message: `Table name must be at least 2 characters long.`,
+    message: `table_name`,
   });
 }
 
@@ -56,7 +67,7 @@ async function tableExists(req, res, next) {
   }
   next({
     status: 404,
-    message: `Table cannot be found.`,
+    message: `${req.params.table_id}`,
   });
 }
 
@@ -119,6 +130,7 @@ module.exports = {
   read: [asyncErrorBoundary(tableExists), read],
   create: [
     hasData,
+    tableNamePropExists,
     tableNameHasAtLeast2Chars,
     tableCanSeatAtLeastOnePerson,
     asyncErrorBoundary(create),
