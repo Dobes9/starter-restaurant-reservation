@@ -120,6 +120,16 @@ async function isTableCapacityGreaterThanReservationSize(req, res, next) {
   });
 }
 
+function isReservationSeated(req, res, next) {
+  if (res.locals.reservation.status === "seated") {
+    next({
+      status: 400,
+      message: `seated`,
+    });
+  }
+  return next();
+}
+
 async function update(req, res) {
   const updatedTable = {
     ...res.locals.table,
@@ -166,6 +176,7 @@ module.exports = {
     hasData,
     reservationIdExists,
     asyncErrorBoundary(reservationExists),
+    isReservationSeated,
     asyncErrorBoundary(isTableCapacityGreaterThanReservationSize),
     asyncErrorBoundary(update),
   ],
