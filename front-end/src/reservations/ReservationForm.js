@@ -211,9 +211,9 @@ export default function ReservationForm({
               className="form-control"
               id="mobile_number"
               name="mobile_number"
-              type="tel"
+              type="text"
               placeholder="XXX-XXX-XXXX"
-              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              //pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               value={reservation.mobile_number}
               onChange={changeHandler}
               required
