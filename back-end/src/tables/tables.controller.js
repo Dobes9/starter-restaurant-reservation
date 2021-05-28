@@ -193,9 +193,6 @@ module.exports = {
   destroy: [
     asyncErrorBoundary(tableExists),
     isTableOccupied,
-    //hasData,
-    //reservationIdExists,
-    //asyncErrorBoundary(reservationExists),
     asyncErrorBoundary(destroy),
   ],
 };
