@@ -23,19 +23,6 @@ export default function ReservationForm({
     people: "",
   },
 }) {
-  // const history = useHistory();
-  // const { reservation_id } = useParams();
-  // const abortController = new AbortController();
-
-  // const initialFormData = {
-  //   first_name: "",
-  //   last_name: "",
-  //   mobile_number: "",
-  //   reservation_date: "",
-  //   reservation_time: "",
-  //   people: 1,
-  //   status: "booked",
-  // };
   const [reservation, setReservation] = useState(initialState);
   const [errors, setErrors] = useState([]);
 
@@ -65,106 +52,6 @@ export default function ReservationForm({
 
     submitHandler(reservation);
   }
-
-  // const [formData, setFormData] = useState({});
-  // const [dateErrors, setDateErrors] = useState([]);
-
-  // useEffect(() => {
-  //   reservation_id
-  //     ? readReservation(reservation_id, abortController.signal).then(
-  //         setFormData
-  //       )
-  //     : setFormData({ ...initialFormData });
-  // }, [reservation_id]);
-
-  // const formChangeHandler = ({ target }) => {
-  //   setReservation({
-  //     ...reservation,
-  //     [target.name]: target.value,
-  //   });
-  // };
-
-  // const submitNewReservation = async (event) => {
-  //   event.preventDefault();
-  //   if (validateDate()) {
-  //     await createReservation(formData, abortController.signal);
-  //     history.push(`/dashboard?date=${formData.reservation_date}`);
-  //     return () => abortController.abort();
-  //   }
-  // };
-
-  // const submitUpdatedReservation = async (event) => {
-  //   event.preventDefault();
-  //   if (validateDate()) {
-  //     await updateReservation(formData, abortController.signal);
-  //     history.goBack();
-  //     return () => abortController.abort();
-  //   }
-  // };
-
-  // function validateDate() {
-  //   const reservationDate = new Date(
-  //     `${formData.reservation_date}T${formData.reservation_time}:00`
-  //   );
-  //   const todaysDate = new Date(today());
-
-  //   const foundErrors = [];
-
-  //   // Validation to check if reservation date is not a Tuesday
-  //   if (reservationDate.getUTCDay() === 2) {
-  //     foundErrors.push({
-  //       message: `Reservation cannot be made: Restaurant is closed on Tuesdays.`,
-  //     });
-  //   }
-
-  //   // Validation to check if reservation date is not a past date
-  //   if (reservationDate < todaysDate) {
-  //     foundErrors.push({
-  //       message: `Reservations cannot be made: Date is in the past.`,
-  //     });
-  //   }
-
-  //   // Validation to check if reseration is before 10:30 AM
-  //   if (
-  //     reservationDate.getHours() < 10 ||
-  //     (reservationDate.getHours() === 10 && reservationDate.getMinutes() < 30)
-  //   ) {
-  //     foundErrors.push({
-  //       message: `Reservation cannot be made: Restaurant is closed until 10:30 AM`,
-  //     });
-  //   }
-
-  //   // Validation to check if reservation is after 10:30 PM
-  //   if (
-  //     reservationDate.getHours() > 22 ||
-  //     (reservationDate.getHours() === 22 && reservationDate.getMinutes() >= 30)
-  //   ) {
-  //     foundErrors.push({
-  //       message: `Reservation cannot be made: Restaurant closes at 10:30 PM`,
-  //     });
-  //   }
-
-  //   // Validation to check if reservation has at least 1 hour before restaurant closes
-  //   if (
-  //     reservationDate.getHours() > 21 ||
-  //     (reservationDate.getHours() === 21 && reservationDate.getMinutes() > 30)
-  //   ) {
-  //     foundErrors.push({
-  //       message: `Reservation cannot be made: Reservation must be made for at least 1 hour before closing (10:30 PM).`,
-  //     });
-  //   }
-  //   setDateErrors(foundErrors);
-
-  //   return foundErrors.length === 0;
-  // }
-
-  // // const displayErrors = () => {
-  // //   return dateErrors.map((error) => <ErrorAlert error={error} />);
-  // // };
-
-  // const displayErrors = dateErrors.map((error, index) => {
-  //   return <ErrorAlert key={index} error={error} />;
-  // });
 
   return (
     <form onSubmit={onSubmit}>
