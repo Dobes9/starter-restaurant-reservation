@@ -2,15 +2,6 @@ import React, { useState } from "react";
 import validate from "./validate";
 import ValidationErrors from "./ValidationErrors";
 
-// import { useHistory, useParams } from "react-router-dom";
-// import { today } from "../utils/date-time";
-// import {
-//   createReservation,
-//   readReservation,
-//   updateReservation,
-// } from "../utils/api";
-// import ErrorAlert from "../layout/ErrorAlert";
-
 export default function ReservationForm({
   submitHandler,
   cancelHandler,
