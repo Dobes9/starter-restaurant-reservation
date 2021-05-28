@@ -168,7 +168,6 @@ export default function ReservationForm({
 
   return (
     <form onSubmit={onSubmit}>
-      {/* <div>{displayErrors}</div> */}
       <ValidationErrors errors={errors} />
       <fieldset>
         <div className="row mb-3">
