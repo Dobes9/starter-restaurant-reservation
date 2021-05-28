@@ -88,32 +88,38 @@ export default function SeatReservation({ tables }) {
     return <ErrorAlert key={index} error={error} />;
   });
 
+  const foundReservation = reservation.reservation_id ? (
+    <table className="table">
+      <thead>
+        <tr>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Mobile Number</th>
+          <th scope="col">Time</th>
+          <th scope="col">People</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr key={reservation_id}>
+          <td>{first_name}</td>
+          <td>{last_name}</td>
+          <td>{mobile_number}</td>
+          <td>{readableTime}</td>
+          <td>{people}</td>
+        </tr>
+      </tbody>
+    </table>
+  ) : (
+    <p>Loading...</p>
+  );
+
   return (
     <main>
       <h1>Seat Reservation</h1>
       {reservationError ? (
         <ErrorAlert error={reservationError} />
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Mobile Number</th>
-              <th scope="col">Time</th>
-              <th scope="col">People</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr key={reservation_id}>
-              <td>{first_name}</td>
-              <td>{last_name}</td>
-              <td>{mobile_number}</td>
-              <td>{readableTime}</td>
-              <td>{people}</td>
-            </tr>
-          </tbody>
-        </table>
+        foundReservation
       )}
       <form onSubmit={submitHandler}>
         <div>{displayErrors}</div>
