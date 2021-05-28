@@ -12,7 +12,7 @@ export default function TablesDisplay({ tables, tablesError }) {
 
     const finishReservationHandler = async (event) => {
       event.preventDefault();
-      await freeTable(table_id, reservation_id, abortController.signal);
+      await freeTable(table_id, abortController.signal);
       history.go(0);
       return () => abortController.abort();
     };
