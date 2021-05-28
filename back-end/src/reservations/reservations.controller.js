@@ -8,19 +8,7 @@ const hasProperties = require("../errors/hasProperties");
 const dateIsTuesday = require("../errors/dateIsTuesday");
 const beforeClosing = require("../errors/beforeClosing");
 
-async function list(req, res) {
-  const date = req.query.date;
-  const mobile_number = req.query.mobile_number;
-  if (date) {
-    res.json({
-      data: await service.list(date),
-    });
-  } else if (mobile_number) {
-    res.json({
-      data: await service.search(mobile_number),
-    });
-  }
-}
+// pipeline for create function
 
 const VALID_PROPERTIES = [
   "reservation_id",
@@ -123,6 +111,22 @@ async function create(req, res) {
   });
 }
 
+async function list(req, res) {
+  const date = req.query.date;
+  const mobile_number = req.query.mobile_number;
+  if (date) {
+    res.json({
+      data: await service.list(date),
+    });
+  } else if (mobile_number) {
+    res.json({
+      data: await service.search(mobile_number),
+    });
+  }
+}
+
+// pipeline for read function
+
 async function reservationExists(req, res, next) {
   const reservation = await service.read(req.params.reservation_id);
   if (reservation) {
@@ -139,11 +143,15 @@ function read(req, res) {
   res.json({ data: res.locals.reservation });
 }
 
+// update function calls create pipeline, plus read pipeline
+
 async function update(req, res) {
   const updatedReservation = { ...req.body.data };
   const data = await service.update(updatedReservation);
   res.json({ data });
 }
+
+// pipeline for updateStatus function
 
 const validStatusUpdate = (req, res, next) => {
   const {
