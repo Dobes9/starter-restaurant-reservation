@@ -8,10 +8,11 @@ export default function TablesDisplay({ tables, tablesError }) {
   const abortController = new AbortController();
 
   const allTables = tables.map((table) => {
-    const { table_id, table_name, capacity, status, reservation_id } = table;
+    const { table_id, table_name, capacity, reservation_id } = table;
 
     const finishReservationHandler = async (event) => {
       event.preventDefault();
+      event.stopPropagation();
       await freeTable(table_id, abortController.signal);
       history.go(0);
       return () => abortController.abort();
@@ -22,10 +23,12 @@ export default function TablesDisplay({ tables, tablesError }) {
         <td>{table_id}</td>
         <td>{table_name}</td>
         <td>{capacity}</td>
-        <td data-table-id-status={table_id}>{status}</td>
+        <td data-table-id-status={table_id}>
+          {reservation_id ? "occupied" : "free"}
+        </td>
         <td>{reservation_id}</td>
         <td>
-          {status === "occupied" ? (
+          {reservation_id ? (
             <button
               className="btn btn-warning"
               type="button"
