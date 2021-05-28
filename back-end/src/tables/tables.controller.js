@@ -97,7 +97,7 @@ async function reservationExists(req, res, next) {
 }
 
 function isTableFree(req, res, next) {
-  if (res.locals.table.status === "free") {
+  if (!res.locals.table.reservation_id) {
     return next();
   }
   next({
@@ -129,7 +129,6 @@ function isReservationSeated(req, res, next) {
 async function update(req, res) {
   const updatedTable = {
     ...res.locals.table,
-    status: "occupied",
     reservation_id: res.locals.reservation.reservation_id,
   };
   const updatedReservation = {
@@ -143,7 +142,7 @@ async function update(req, res) {
 }
 
 function isTableOccupied(req, res, next) {
-  if (res.locals.table.status === "occupied") {
+  if (res.locals.table.reservation_id) {
     return next();
   }
   next({
@@ -155,7 +154,6 @@ function isTableOccupied(req, res, next) {
 async function destroy(req, res) {
   const updatedTable = {
     ...res.locals.table,
-    status: "free",
     reservation_id: null,
   };
   const seatedReservation = await ReservationsService.read(
