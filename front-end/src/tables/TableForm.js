@@ -1,32 +1,34 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import { createTable } from "../utils/api";
+import { createTable, listTables } from "../utils/api";
 
-export default function TableForm() {
+export default function TableForm({ setTables }) {
   const history = useHistory();
   const abortController = new AbortController();
 
   const initialFormData = {
     table_name: "",
-    capacity: 0,
-    status: "free",
+    capacity: "",
   };
 
   const [formData, setFormData] = useState({ ...initialFormData });
   const [error, setError] = useState(null);
 
-  const formChangeHandler = ({ target }) => {
-    setFormData({
-      ...formData,
-      [target.name]: target.value,
-    });
-  };
+  function formChangeHandler({ target: { name, value } }) {
+    setFormData((previousTable) => ({
+      ...previousTable,
+      [name]: value,
+    }));
+  }
 
   const submitHandler = async (event) => {
     event.preventDefault();
+    event.stopPropagation();
+
     if (validateFields()) {
       await createTable(formData, abortController.signal);
+      await listTables(abortController.signal).then(setTables);
       history.push(`/dashboard`);
       return () => abortController.abort();
     }
@@ -72,13 +74,14 @@ export default function TableForm() {
         <div className="row mb-3">
           <div className="col-6 form-group">
             <label className="form-label" htmlFor="capacity">
-              Table Capacity
+              Capacity
             </label>
             <input
               className="form-control"
               id="capacity"
               name="capacity"
               type="number"
+              aria-label="Table capacity"
               max="12"
               min="1"
               value={formData.capacity}
