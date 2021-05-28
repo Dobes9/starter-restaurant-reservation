@@ -10,7 +10,7 @@ export default function EditReservation() {
   const { reservation_id } = useParams();
   const [reservation, setReservation] = useState({});
   const [reservationError, setReservationError] = useState(null);
-  
+
   useEffect(() => {
     const abortController = new AbortController();
     setReservationError(null);
@@ -21,30 +21,27 @@ export default function EditReservation() {
     return () => abortController.abort();
   }, [reservation_id]);
 
-  const submitHandler = (event) => {
+  const submitHandler = (reservation) => {
     const abortController = new AbortController();
     setReservationError(null);
-    updateReservation(
-      { reservation_id, ...reservation },
-      abortController.signal
-    )
-    .then((updatedReservation) => {
-      history.push(
-        `/dashboard?date=${formatAsDate(updatedReservation.reservation_date)}`
-      );
-    })
-    .catch(setReservationError);
+    updateReservation(reservation, abortController.signal)
+      .then((updatedReservation) => {
+        history.push(
+          `/dashboard?date=${formatAsDate(updatedReservation.reservation_date)}`
+        );
+      })
+      .catch(setReservationError);
     return () => abortController.abort();
-  }
+  };
 
   function cancelHandler() {
     history.goBack();
   }
   const child = reservation.reservation_id ? (
-    <ReservationForm 
+    <ReservationForm
       initialState={reservation}
-      submitHandler={submitHandler} 
-      cancelHandler={cancelHandler}  
+      submitHandler={submitHandler}
+      cancelHandler={cancelHandler}
     />
   ) : (
     <p>Loading...</p>
