@@ -6,7 +6,6 @@ import ErrorAlert from "../layout/ErrorAlert";
 export default function ReservationsDisplay({
   reservations,
   reservationsError,
-  search,
 }) {
   const history = useHistory();
   const abortController = new AbortController();
