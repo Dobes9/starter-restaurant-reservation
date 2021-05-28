@@ -92,10 +92,10 @@ export default function TableForm() {
             className="btn btn-secondary mx-1"
             onClick={() => history.goBack()}
           >
-            Cancel
+            <span className="oi oi-x" /> Cancel
           </button>
           <button className="btn btn-primary mx-1" type="submit">
-            Submit
+            <span className="oi oi-check" /> Submit
           </button>
         </div>
       </form>
