@@ -58,7 +58,7 @@ export default function SeatReservation({ tables }) {
     } else if (reservationError) {
       foundErrors.push({ message: `The reservation does not exist.` });
     } else {
-      if (foundTable.status === "occupied") {
+      if (foundTable.reservation_id) {
         foundErrors.push({
           message: `The table you selected is currently occupied.`,
         });
@@ -83,12 +83,6 @@ export default function SeatReservation({ tables }) {
       return () => abortController.abort();
     }
   };
-
-  // const displayErrors = () => {
-  //   return errors.map((error, index) => {
-  //     return <ErrorAlert key={index} error={error} />;
-  //   });
-  // };
 
   const displayErrors = errors.map((error, index) => {
     return <ErrorAlert key={index} error={error} />;
@@ -146,10 +140,10 @@ export default function SeatReservation({ tables }) {
             className="btn btn-secondary mx-1"
             onClick={() => history.goBack()}
           >
-            Cancel
+            <span className="oi oi-x" /> Cancel
           </button>
           <button className="btn btn-primary mx-1" type="submit">
-            Submit
+            <span className="oi oi-check" /> Submit
           </button>
         </div>
       </form>
