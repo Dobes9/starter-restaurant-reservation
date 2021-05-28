@@ -28,33 +28,3 @@ function Dashboard({
       <ReservationsDisplay
         reservations={reservations}
         reservationsError={reservationsError}
-        search={false}
-      />
-
-      <h4>Tables</h4>
-
-      <TablesDisplay tables={tables} tablesError={tablesError} />
-
-      <button
-        className="btn btn-secondary mx-1"
-        onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
-      >
-        Previous
-      </button>
-      <button
-        className="btn btn-primary mx-1"
-        onClick={() => history.push(`/dashboard?date=${today()}`)}
-      >
-        Today
-      </button>
-      <button
-        className="btn btn-secondary mx-1"
-        onClick={() => history.push(`/dashboard?date=${next(date)}`)}
-      >
-        Next
-      </button>
-    </main>
-  );
-}
-
-export default Dashboard;
