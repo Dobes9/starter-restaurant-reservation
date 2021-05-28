@@ -1,12 +1,12 @@
 const knex = require("../db/connection");
 const tableName = "tables";
 
-async function list() {
-  return knex(tableName).orderBy("table_name");
-}
-
 function create(newTable) {
   return knex(tableName).insert(newTable).returning("*");
+}
+
+async function list() {
+  return knex(tableName).orderBy("table_name");
 }
 
 async function read(table_id) {
@@ -21,8 +21,8 @@ async function update(table) {
 }
 
 module.exports = {
-  list,
   create,
+  list,
   read,
   update,
 };

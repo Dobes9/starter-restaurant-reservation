@@ -1,19 +1,15 @@
 const knex = require("../db/connection");
 const tableName = "reservations";
 
+function create(newReservation) {
+  return knex(tableName).insert(newReservation).returning("*");
+}
+
 async function list(reservation_date) {
   return knex(tableName)
     .where({ reservation_date })
     .whereNotIn("status", ["finished", "cancelled"])
     .orderBy("reservation_time");
-}
-
-function create(newReservation) {
-  return knex(tableName).insert(newReservation).returning("*");
-}
-
-async function read(reservation_id) {
-  return knex(tableName).where({ reservation_id }).first();
 }
 
 function search(mobile_number) {
@@ -25,6 +21,10 @@ function search(mobile_number) {
     .orderBy("reservation_date");
 }
 
+async function read(reservation_id) {
+  return knex(tableName).where({ reservation_id }).first();
+}
+
 async function update(updatedReservation) {
   return knex(tableName)
     .where({ reservation_id: updatedReservation.reservation_id })
@@ -33,10 +33,10 @@ async function update(updatedReservation) {
 }
 
 module.exports = {
-  list,
   create,
-  read,
+  list,
   search,
+  read,
   update,
 };
 
