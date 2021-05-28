@@ -47,7 +47,10 @@ export default function ReservationsDisplay({
         <td>
           {status === "booked" ? (
             <a href={`/reservations/${reservation_id}/seat`}>
-              <button className="btn btn-primary" type="button">
+              <button
+                className="btn btn-light btn-outline-primary"
+                type="button"
+              >
                 Seat
               </button>
             </a>
@@ -56,7 +59,10 @@ export default function ReservationsDisplay({
         <td>
           {status === "booked" ? (
             <a href={`/reservations/${reservation_id}/edit`}>
-              <button className="btn btn-primary" type="button">
+              <button
+                className="btn btn-light btn-outline-primary"
+                type="button"
+              >
                 Edit
               </button>
             </a>
@@ -65,7 +71,7 @@ export default function ReservationsDisplay({
         <td>
           {status === "booked" ? (
             <button
-              className="btn btn-danger"
+              className="btn btn-light btn-outline-danger"
               type="button"
               data-reservation-id-cancel={reservation_id}
               onClick={() => {
