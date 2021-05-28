@@ -4,7 +4,7 @@ const tableName = "reservations";
 async function list(reservation_date) {
   return knex(tableName)
     .where({ reservation_date })
-    .whereNot({ status: "finished" })
+    .whereNotIn("status", ["finished", "cancelled"])
     .orderBy("reservation_time");
 }
 
@@ -40,11 +40,8 @@ module.exports = {
   update,
 };
 
-
 // // teddy check below ------->
 // const knex = require("../db/connection");
-
-
 
 // function list(date) {
 //     return knex("reservations")
@@ -64,7 +61,7 @@ module.exports = {
 //     .orderBy("reservation_time")
 // }
 
-// const read = (id) => 
+// const read = (id) =>
 //      knex("reservations")
 //     .select()
 //     .where({reservation_id: id})
