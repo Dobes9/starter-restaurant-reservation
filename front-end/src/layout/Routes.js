@@ -70,7 +70,7 @@ function Routes() {
         <EditReservation />
       </Route>
       <Route path="/tables/new">
-        <TableForm />
+        <TableForm setTables={setTables} />
       </Route>
       <Route>
         <NotFound />
