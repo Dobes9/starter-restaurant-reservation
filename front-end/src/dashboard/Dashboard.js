@@ -25,6 +25,26 @@ function Dashboard({
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
+      <div className="d-md-flex mb-3">
+        <button
+          className="btn btn-secondary mx-1"
+          onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
+        >
+          Previous
+        </button>
+        <button
+          className="btn btn-primary mx-1"
+          onClick={() => history.push(`/dashboard?date=${today()}`)}
+        >
+          Today
+        </button>
+        <button
+          className="btn btn-secondary mx-1"
+          onClick={() => history.push(`/dashboard?date=${next(date)}`)}
+        >
+          Next
+        </button>
+      </div>
       <ReservationsDisplay
         reservations={reservations}
         reservationsError={reservationsError}
@@ -33,25 +53,6 @@ function Dashboard({
       <h4>Tables</h4>
 
       <TablesDisplay tables={tables} tablesError={tablesError} />
-
-      <button
-        className="btn btn-secondary mx-1"
-        onClick={() => history.push(`/dashboard?date=${previous(date)}`)}
-      >
-        Previous
-      </button>
-      <button
-        className="btn btn-primary mx-1"
-        onClick={() => history.push(`/dashboard?date=${today()}`)}
-      >
-        Today
-      </button>
-      <button
-        className="btn btn-secondary mx-1"
-        onClick={() => history.push(`/dashboard?date=${next(date)}`)}
-      >
-        Next
-      </button>
     </main>
   );
 }
