@@ -1,5 +1,7 @@
 # Capstone: Restaurant Reservation System
 
+All text below is the prompt provided for this project. Additional README files can be found in the folders front-end and back-end, each documenting the functions of their corresponding component of this capstone project.
+
 > You have been hired as a full stack developer at _Periodic Tables_, a startup that is creating a reservation system for fine dining restaurants.
 > The software is used only by restaurant personnel when a customer calls to request a reservation.
 > At this point, the customers will not access the system online.
