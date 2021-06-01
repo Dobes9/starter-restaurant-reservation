@@ -1,12 +1,26 @@
 # Capstone: Restaurant Reservation System Backend
 #### Final Capstone for Thinkful Engineering Immersion Program
 
-// some text to explain what this capstone tests our ability to do
+This is the back-end application for the final capstone of the Thinkful Engineering Immersion Program.
+
+## Links
+* ![Prompt](https://github.com/Dobes9/thinkful-final-capstone-Periodic-Tables/blob/main/README.md)
+* ![Front-end README](https://github.com/Dobes9/thinkful-final-capstone-Periodic-Tables/blob/main/front-end/README.md)
 
 ## Definitions of API Routes
 
 ### GET /reservations
 For this route, the controller additionally expects to receive either a date or mobile_number query. If it receives a date query, it will respond with all reservations on the date query, but only reservations with a status of "booked" or "seated". "finished" or "cancelled" reservations will not be returned. If a mobile_number query is passed in, the controller will return all reservations that match the phone number provided, regardless of their status.
+
+A successful call will return the following data for each reservation:
+* reservation_id: integer
+* first_name: string
+* last_name: string
+* mobile_number: string, formatted as a mobile-number
+* reservation_date: a date string
+* reservation_time: a time string
+* people: integer
+* status: string, either "booked", "seated", "finished", or "cancelled"
 
 ### POST /reservations
 This route will create a new reservation, assuming the reservation passes all validations. The reservation needs all required fields shown in hasProperties, and the reservation must be set for a non Tuesday, between the hours of 10:30 and 21:30.
@@ -22,6 +36,12 @@ This route also updates a reservation, but is set up to only update the "status"
 
 ### GET /tables
 This route will list all tables in the database.
+
+A successful call will return the following data for each table:
+* table_id: integer
+* table_name: string
+* capacity: integer
+* reservation_id: null (when table is not assigned to a reservation). When table is assigned to a reservation, it will be the reservation_id of the reservation
 
 ### POST /tables
 This route will create a new table in the database, as long as the table has the properties listed in hasProperties, and the table_name is at least 2 characters long, and the capacity is at least 1.
