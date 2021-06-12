@@ -57,4 +57,4 @@ This route being a DELETE method is a bit misleading. Neither the table nor the 
 
 ## Technology
 #### Built with:
-  * Node.js, Express, PostgreSQL, Knex, CORS.
+  * Node.js, Express, PostgreSQL, Knex, CORS, JSON.
